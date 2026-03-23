@@ -5,147 +5,134 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <title>G & P Scorecard</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --bg:#0f0e0c; --surface:#1a1917; --surface2:#252320; --surface3:#2e2c28;
-  --border:#2e2c28; --gold:#c9a84c; --gold-light:#e8c97a; --cream:#f0e8d8;
-  --muted:#6b6560; --g-color:#7eb8d4; --p-color:#d47eb0;
-  --win:#6fcf97; --lose:#eb5757; --text:#e8e0d4;
-}
+:root{--bg:#0f0e0c;--surface:#1a1917;--surface2:#252320;--surface3:#2e2c28;--border:#2e2c28;--gold:#c9a84c;--gold-light:#e8c97a;--cream:#f0e8d8;--muted:#6b6560;--g-color:#7eb8d4;--p-color:#d47eb0;--win:#6fcf97;--lose:#eb5757;--text:#e8e0d4;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
 body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(ellipse 80% 60% at 20% 10%,rgba(201,168,76,0.04) 0%,transparent 60%),radial-gradient(ellipse 60% 80% at 80% 80%,rgba(126,184,212,0.03) 0%,transparent 60%);pointer-events:none;z-index:0;}
-
-/* SCREENS */
 .screen{display:none;position:relative;z-index:1;min-height:100vh;}
 .screen.active{display:block;}
 
-/* AUTH SCREEN */
+/* AUTH */
 .auth-wrap{max-width:420px;margin:0 auto;padding:40px 20px;}
 .auth-logo{text-align:center;padding:40px 0 32px;}
-.auth-logo .label{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.auth-logo .lbl{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
 .auth-logo h1{font-family:'Playfair Display',serif;font-size:38px;font-weight:900;color:var(--cream);}
 .auth-logo h1 span{color:var(--gold-light);}
 .auth-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;}
 .auth-tabs{display:flex;gap:4px;background:var(--surface2);border-radius:10px;padding:4px;margin-bottom:20px;}
 .auth-tab{flex:1;padding:9px;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border-radius:7px;transition:all 0.2s;}
 .auth-tab.active{background:var(--surface3);color:var(--gold-light);}
-.form-group{margin-bottom:14px;}
-.form-group label{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600;}
-.form-group input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
-.form-group input:focus{border-color:var(--gold);}
-.form-group input::placeholder{color:var(--muted);}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600;}
+.fg input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+.fg input:focus{border-color:var(--gold);}
+.fg input::placeholder{color:var(--muted);}
 .btn-primary{width:100%;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;border-radius:10px;color:#1a1400;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:all 0.2s;margin-top:4px;}
 .btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,0.3);}
 .btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
 .auth-error{background:rgba(235,87,87,0.1);border:1px solid rgba(235,87,87,0.3);border-radius:8px;padding:10px 12px;font-size:12px;color:#f0a0a0;margin-bottom:14px;display:none;}
+.auth-success{background:rgba(111,207,151,0.1);border:1px solid rgba(111,207,151,0.3);border-radius:8px;padding:10px 12px;font-size:12px;color:var(--win);margin-bottom:14px;display:none;}
 
 /* INVITE SCREEN */
-.invite-wrap{max-width:420px;margin:0 auto;padding:40px 20px;}
-.invite-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;text-align:center;}
-.invite-card h2{font-family:'Playfair Display',serif;font-size:24px;color:var(--cream);margin-bottom:8px;}
-.invite-card p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
-.invite-status{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px;font-size:13px;}
-.invite-status .partner-name{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold-light);margin-top:4px;}
-.btn-secondary{width:100%;padding:13px;background:transparent;border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;margin-top:8px;}
+.invite-wrap{max-width:420px;margin:0 auto;padding:24px 16px;}
+.invite-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px;}
+.invite-card h2{font-family:'Playfair Display',serif;font-size:22px;color:var(--cream);margin-bottom:6px;}
+.invite-card p{font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6;}
+
+/* CODE DISPLAY */
+.code-display{background:var(--surface2);border:2px solid var(--gold);border-radius:14px;padding:20px;text-align:center;margin-bottom:14px;}
+.code-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.code-value{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;color:var(--gold-light);letter-spacing:8px;}
+.code-sub{font-size:11px;color:var(--muted);margin-top:6px;}
+.btn-copy{width:100%;padding:12px;background:rgba(201,168,76,0.1);border:1px solid var(--gold);border-radius:10px;color:var(--gold-light);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;margin-bottom:8px;}
+.btn-copy:hover{background:rgba(201,168,76,0.2);}
+.btn-secondary{width:100%;padding:12px;background:transparent;border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s;margin-top:6px;}
 .btn-secondary:hover{border-color:var(--gold);color:var(--gold);}
-.or-divider{display:flex;align-items:center;gap:12px;margin:16px 0;color:var(--muted);font-size:12px;}
-.or-divider::before,.or-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.or-div{display:flex;align-items:center;gap:12px;margin:14px 0;color:var(--muted);font-size:12px;}
+.or-div::before,.or-div::after{content:'';flex:1;height:1px;background:var(--border);}
 
 /* MAIN APP */
 .app-wrap{max-width:960px;margin:0 auto;padding:0 0 80px;}
-
-/* TOP BAR */
-.top-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
-.top-bar-left{display:flex;align-items:center;gap:10px;}
-.top-bar h2{font-family:'Playfair Display',serif;font-size:18px;color:var(--cream);}
-.partner-badge{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:11px;color:var(--gold);font-weight:600;}
-.top-bar-right{display:flex;align-items:center;gap:8px;}
-.icon-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
+.top-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.top-bar-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--cream);font-weight:700;}
+.top-bar-sub{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--win);display:inline-block;margin-right:4px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.icon-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all 0.15s;}
 .icon-btn:hover{border-color:var(--gold);color:var(--gold);}
 
-/* TABS */
-.tabs{display:flex;gap:4px;background:var(--surface);padding:8px 16px;border-bottom:1px solid var(--border);}
-.tab{flex:1;padding:8px 4px;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;border-radius:8px;transition:all 0.2s;letter-spacing:0.5px;}
+.tabs{display:flex;gap:4px;background:var(--surface);padding:8px 14px;border-bottom:1px solid var(--border);}
+.tab{flex:1;padding:8px 4px;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;cursor:pointer;border-radius:8px;transition:all 0.2s;}
 .tab.active{background:var(--surface2);color:var(--gold-light);}
 
-/* DATE NAV */
-.date-nav{display:flex;align-items:center;justify-content:space-between;margin:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;}
-.nav-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:16px;transition:all 0.15s;display:flex;align-items:center;justify-content:center;}
+.date-nav{display:flex;align-items:center;justify-content:space-between;margin:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:9px 12px;}
+.nav-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:16px;transition:all 0.15s;display:flex;align-items:center;justify-content:center;}
 .nav-btn:hover{border-color:var(--gold);color:var(--gold);}
-.date-display{text-align:center;}
-.date-main{font-family:'Playfair Display',serif;font-size:16px;color:var(--cream);font-weight:700;}
-.date-sub{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;}
+.date-main{font-family:'Playfair Display',serif;font-size:15px;color:var(--cream);font-weight:700;text-align:center;}
+.date-sub{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;text-align:center;}
 
-/* LIVE INDICATOR */
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--win);display:inline-block;margin-right:5px;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
-.live-bar{display:flex;align-items:center;justify-content:center;padding:6px;font-size:11px;color:var(--win);background:rgba(111,207,151,0.07);border-bottom:1px solid var(--border);}
-
-/* SCORE HEROES */
-.score-top{display:grid;grid-template-columns:1fr 50px 1fr;gap:8px;padding:0 16px;margin-bottom:10px;}
+/* SCORES */
+.score-top{display:grid;grid-template-columns:1fr 46px 1fr;gap:8px;padding:0 14px;margin-bottom:10px;}
 .score-hero{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 10px;text-align:center;transition:border-color 0.3s,box-shadow 0.3s;}
 .score-hero.you{border-top:3px solid var(--g-color);}
 .score-hero.partner{border-top:3px solid var(--p-color);}
 .score-hero.winner{box-shadow:0 0 20px rgba(201,168,76,0.18);border-color:var(--gold)!important;}
-.s-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:4px;}
-.score-hero.you .s-label{color:var(--g-color);}
-.score-hero.partner .s-label{color:var(--p-color);}
-.s-name-display{font-size:11px;color:var(--cream);font-weight:600;margin-bottom:6px;}
+.s-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:3px;}
+.score-hero.you .s-lbl{color:var(--g-color);}
+.score-hero.partner .s-lbl{color:var(--p-color);}
+.s-name{font-size:11px;color:var(--cream);font-weight:600;margin-bottom:5px;}
 .s-pts{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:var(--cream);line-height:1;}
 .s-of{font-size:10px;color:var(--muted);margin-top:2px;}
 .s-pct{font-size:17px;font-family:'Playfair Display',serif;font-weight:700;margin-top:3px;}
 .score-hero.you .s-pct{color:var(--g-color);}
 .score-hero.partner .s-pct{color:var(--p-color);}
-.s-tag{display:inline-block;margin-top:6px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:600;}
+.s-tag{display:inline-block;margin-top:5px;padding:2px 8px;border-radius:20px;font-size:9px;font-weight:600;}
 .s-streak{font-size:10px;color:var(--gold);margin-top:4px;min-height:14px;}
 .tag-perfect{background:rgba(111,207,151,0.15);color:var(--win);}
 .tag-great{background:rgba(201,168,76,0.15);color:var(--gold-light);}
 .tag-good{background:rgba(126,184,212,0.15);color:var(--g-color);}
 .tag-keep{background:rgba(235,87,87,0.1);color:#f0a0a0;}
-.vs-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
-.vs-text{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;color:var(--gold);}
-.vs-sub{font-size:7px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);text-align:center;}
+.vs-col{display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.vs-text{font-family:'Playfair Display',serif;font-size:15px;font-weight:900;color:var(--gold);}
+.vs-sub{font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);}
 
-/* CAT BARS */
-.cat-scores{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px;margin-bottom:10px;}
-.cat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
+.cat-scores{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px;margin-bottom:10px;}
+.cat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 11px;}
 .cat-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;font-weight:600;}
-.cat-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.cat-row{display:flex;align-items:center;gap:5px;margin-bottom:4px;}
 .cat-row:last-child{margin-bottom:0;}
-.cat-who{font-size:10px;font-weight:600;width:14px;}
+.cat-who{font-size:10px;font-weight:600;width:12px;}
 .cat-who.you{color:var(--g-color);}
 .cat-who.partner{color:var(--p-color);}
-.cat-bar-wrap{flex:1;background:var(--surface3);border-radius:4px;height:5px;overflow:hidden;}
-.cat-bar{height:100%;border-radius:4px;transition:width 0.5s;}
-.cat-bar.you{background:var(--g-color);}
-.cat-bar.partner{background:var(--p-color);}
-.cat-val{font-size:9px;color:var(--muted);width:24px;text-align:right;}
+.cat-bw{flex:1;background:var(--surface3);border-radius:4px;height:5px;overflow:hidden;}
+.cat-bf{height:100%;border-radius:4px;transition:width 0.5s;}
+.cat-bf.you{background:var(--g-color);}
+.cat-bf.partner{background:var(--p-color);}
+.cat-val{font-size:9px;color:var(--muted);width:22px;text-align:right;}
 
-/* SPENDING CARD */
-.spending-card{margin:0 16px 12px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-.spending-header{background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04));border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;}
-.spending-title{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
-.spending-total{font-family:'Playfair Display',serif;font-size:16px;color:var(--cream);font-weight:700;}
-.spending-body{padding:12px 14px;}
-.spending-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.spending-row:last-child{margin-bottom:0;}
-.spending-who{font-size:10px;font-weight:600;width:44px;flex-shrink:0;}
-.spending-who.you{color:var(--g-color);}
-.spending-who.partner{color:var(--p-color);}
-.spending-input-wrap{flex:1;position:relative;}
-.spending-input-wrap span{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:13px;font-weight:600;}
-.spending-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 10px 8px 26px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s;}
-.spending-input:focus{border-color:var(--gold);}
-.spending-amount{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;text-align:right;}
-.spending-amount.you{color:var(--g-color);}
-.spending-amount.partner{color:var(--p-color);}
+/* SPENDING */
+.spending-card{margin:0 14px 10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.spending-hdr{background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04));border-bottom:1px solid var(--border);padding:9px 13px;display:flex;align-items:center;justify-content:space-between;}
+.spending-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.spending-total{font-family:'Playfair Display',serif;font-size:15px;color:var(--cream);font-weight:700;}
+.spending-body{padding:11px 13px;}
+.spend-row{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+.spend-row:last-child{margin-bottom:0;}
+.spend-who{font-size:10px;font-weight:600;width:42px;flex-shrink:0;}
+.spend-who.you{color:var(--g-color);}
+.spend-who.partner{color:var(--p-color);}
+.spend-input-wrap{flex:1;position:relative;}
+.spend-input-wrap span{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--gold);font-size:12px;font-weight:600;}
+.spend-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 9px 8px 24px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s;}
+.spend-input:focus{border-color:var(--gold);}
+.spend-amt{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;}
+.spend-amt.partner{color:var(--p-color);}
 
 /* MISSED */
-.missed-bar{margin:0 16px 10px;background:rgba(235,87,87,0.07);border:1px solid rgba(235,87,87,0.2);border-radius:10px;padding:10px 14px;display:none;}
+.missed-bar{margin:0 14px 10px;background:rgba(235,87,87,0.07);border:1px solid rgba(235,87,87,0.2);border-radius:10px;padding:9px 13px;display:none;}
 .missed-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#f0a0a0;margin-bottom:7px;font-weight:600;}
 .missed-list{display:flex;flex-wrap:wrap;gap:5px;}
 .missed-chip{background:rgba(235,87,87,0.12);border:1px solid rgba(235,87,87,0.25);border-radius:5px;padding:2px 7px;font-size:10px;}
@@ -154,87 +141,86 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .missed-chip .who.partner{color:var(--p-color);}
 
 /* BREAKDOWN */
-.breakdown-toggle{width:calc(100% - 32px);margin:0 16px 8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px 14px;cursor:pointer;color:var(--muted);font-size:11px;font-weight:500;letter-spacing:1px;text-align:center;transition:all 0.2s;}
-.breakdown-panel{margin:0 16px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
-.bd-header{display:grid;grid-template-columns:1fr 72px 72px;padding:7px 12px;background:var(--surface2);border-bottom:1px solid var(--border);}
-.bd-header span{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-align:center;}
-.bd-header span:first-child{text-align:left;color:var(--muted);}
-.bd-header span.you{color:var(--g-color);}
-.bd-header span.partner{color:var(--p-color);}
-.bd-row{display:grid;grid-template-columns:1fr 72px 72px;padding:7px 12px;border-bottom:1px solid var(--border);align-items:center;}
+.bd-toggle{width:calc(100% - 28px);margin:0 14px 8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:9px;cursor:pointer;color:var(--muted);font-size:11px;font-weight:500;letter-spacing:1px;text-align:center;transition:all 0.2s;}
+.bd-panel{margin:0 14px 12px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.bd-hdr{display:grid;grid-template-columns:1fr 70px 70px;padding:7px 12px;background:var(--surface2);border-bottom:1px solid var(--border);}
+.bd-hdr span{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-align:center;}
+.bd-hdr span:first-child{text-align:left;color:var(--muted);}
+.bd-hdr span.you{color:var(--g-color);}
+.bd-hdr span.partner{color:var(--p-color);}
+.bd-row{display:grid;grid-template-columns:1fr 70px 70px;padding:7px 12px;border-bottom:1px solid var(--border);align-items:center;}
 .bd-row:last-child{border-bottom:none;}
 .bd-row.cat-lbl{background:var(--surface2);padding:5px 12px;}
 .bd-row.cat-lbl span{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;}
 .bd-act{font-size:11px;color:var(--text);}
 .bd-cell{display:flex;align-items:center;justify-content:center;}
-.bd-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.bd-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
 .bd-dot.yes{background:rgba(111,207,151,0.2);color:var(--win);}
 .bd-dot.no{background:rgba(235,87,87,0.1);color:#f0a0a0;}
 .bd-dot.na{background:rgba(74,72,69,0.3);color:var(--muted);font-size:8px;}
 .bd-dot.empty{background:var(--surface3);color:var(--muted);font-size:8px;}
 
 /* COL HEADERS */
-.col-headers{display:grid;grid-template-columns:1fr 82px 82px;padding:0 16px 6px;}
-.col-header{text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;}
-.col-header.you{color:var(--g-color);}
-.col-header.partner{color:var(--p-color);}
+.col-hdrs{display:grid;grid-template-columns:1fr 80px 80px;padding:0 14px 6px;}
+.col-hdr{text-align:center;font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;}
+.col-hdr.you{color:var(--g-color);}
+.col-hdr.partner{color:var(--p-color);}
 
 /* SECTIONS */
-.section{margin:0 16px 12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
-.section-header{padding:9px 14px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.sh-left{display:flex;align-items:center;gap:7px;}
-.sh-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
-.sh-pts{font-size:10px;color:var(--muted);}
-.activity-row{display:grid;grid-template-columns:1fr 82px 82px;border-bottom:1px solid var(--border);align-items:center;min-height:48px;}
-.activity-row:last-child{border-bottom:none;}
-.act-label{padding:9px 14px;font-size:12px;color:var(--text);line-height:1.4;}
-.act-label .sub{font-size:10px;color:var(--muted);margin-top:1px;}
-.act-label .pts{font-size:9px;color:var(--gold);font-weight:600;margin-top:1px;}
+.section{margin:0 14px 11px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.sec-hdr{padding:9px 13px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.sec-hdr-l{display:flex;align-items:center;gap:7px;}
+.sec-title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.sec-pts{font-size:10px;color:var(--muted);}
+.act-row{display:grid;grid-template-columns:1fr 80px 80px;border-bottom:1px solid var(--border);align-items:center;min-height:48px;}
+.act-row:last-child{border-bottom:none;}
+.act-lbl{padding:9px 13px;font-size:12px;color:var(--text);line-height:1.4;}
+.act-lbl .sub{font-size:10px;color:var(--muted);margin-top:1px;}
+.act-lbl .pts{font-size:9px;color:var(--gold);font-weight:600;margin-top:1px;}
 .act-cell{padding:5px;display:flex;align-items:center;justify-content:center;border-left:1px solid var(--border);height:100%;}
 
 /* TOGGLES */
 .tg{display:flex;flex-direction:column;gap:3px;width:100%;}
-.tb{border:1px solid var(--border);background:transparent;border-radius:5px;padding:3px 4px;font-size:9px;font-weight:700;cursor:pointer;transition:all 0.15s;color:var(--muted);width:100%;letter-spacing:0.5px;}
+.tb{border:1px solid var(--border);background:transparent;border-radius:5px;padding:3px 4px;font-size:9px;font-weight:700;cursor:pointer;transition:all 0.15s;color:var(--muted);width:100%;}
 .tb:hover{border-color:var(--muted);color:var(--text);}
 .tb.yes.active{background:rgba(111,207,151,0.2);border-color:var(--win);color:var(--win);}
 .tb.no.active{background:rgba(235,87,87,0.15);border-color:var(--lose);color:var(--lose);}
 .tb.na.active{background:rgba(74,72,69,0.5);border-color:#4a4845;color:#888;}
 .tb:disabled{opacity:0.35;cursor:default;}
 
-/* SAVE BTN */
-.save-btn{width:calc(100% - 32px);margin:0 16px;padding:14px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;border-radius:12px;color:#1a1400;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+.save-btn{width:calc(100% - 28px);margin:0 14px;padding:13px;background:linear-gradient(135deg,var(--gold),var(--gold-light));border:none;border-radius:12px;color:#1a1400;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
 .save-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,168,76,0.3);}
 
-/* PERIOD VIEWS */
-.period-nav{display:flex;align-items:center;justify-content:space-between;margin:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;}
-.period-label{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--cream);}
-.wins-banner{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;margin:0 16px 12px;}
-.win-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:center;}
-.win-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:900;line-height:1;}
+/* PERIOD */
+.period-nav{display:flex;align-items:center;justify-content:space-between;margin:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:9px 12px;}
+.period-lbl{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--cream);}
+.wins-banner{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;margin:0 14px 11px;}
+.win-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px;text-align:center;}
+.win-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;line-height:1;}
 .win-card.you .win-num{color:var(--g-color);}
 .win-card.partner .win-num{color:var(--p-color);}
-.win-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px;}
-.win-sub{font-size:10px;color:var(--muted);margin-top:2px;}
-.tie-badge{font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--gold);text-align:center;}
+.win-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+.win-sub{font-size:9px;color:var(--muted);margin-top:2px;}
+.tie-badge{font-family:'Playfair Display',serif;font-size:11px;font-weight:700;color:var(--gold);text-align:center;}
 
-.leaderboard{margin:0 16px 12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
-.lb-hdr{background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:7px;}
-.lb-hdr .title{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
-.lb-row{display:grid;grid-template-columns:30px 1fr 55px 44px 55px 55px 55px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);gap:5px;font-size:11px;}
+.lb{margin:0 14px 11px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.lb-hdr{background:linear-gradient(135deg,rgba(201,168,76,0.15),rgba(201,168,76,0.05));border-bottom:1px solid var(--border);padding:10px 13px;display:flex;align-items:center;gap:7px;}
+.lb-hdr .t{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.lb-row{display:grid;grid-template-columns:28px 1fr 52px 42px 52px 52px 52px;align-items:center;padding:9px 13px;border-bottom:1px solid var(--border);gap:4px;font-size:11px;}
 .lb-row:last-child{border-bottom:none;}
-.lb-row.hr{font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:6px 14px;}
+.lb-row.hr{font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding:6px 13px;}
 .lb-rank{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--gold);}
 .lb-name{font-weight:600;font-size:12px;}
 .lb-name.you{color:var(--g-color);}
 .lb-name.partner{color:var(--p-color);}
-.lb-stat{text-align:center;}
-.lb-stat.hi{color:var(--gold-light);font-weight:600;}
-.lb-stat.wc{color:var(--win);font-weight:600;}
-.lb-stat.st{color:var(--gold);font-weight:600;}
+.lb-s{text-align:center;}
+.lb-s.hi{color:var(--gold-light);font-weight:600;}
+.lb-s.wc{color:var(--win);font-weight:600;}
+.lb-s.st{color:var(--gold);font-weight:600;}
 
-.bw-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 16px 12px;}
-.bw-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 12px;}
-.bw-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;font-weight:600;}
+.bw-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 14px 11px;}
+.bw-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 12px;}
+.bw-title{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600;}
 .bw-date{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;color:var(--cream);margin-bottom:5px;}
 .bw-scores{display:flex;gap:8px;}
 .bw-score .bw-who{font-size:8px;letter-spacing:1px;text-transform:uppercase;font-weight:600;}
@@ -244,16 +230,16 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .bw-score.you .bw-val{color:var(--g-color);}
 .bw-score.partner .bw-val{color:var(--p-color);}
 
-.cat-breakdown{margin:0 16px 12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
-.cat-bd-hdr{padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
-.cat-bd-row{padding:10px 14px;border-bottom:1px solid var(--border);}
+.cat-bd{margin:0 14px 11px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.cat-bd-hdr{padding:10px 13px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.cat-bd-row{padding:10px 13px;border-bottom:1px solid var(--border);}
 .cat-bd-row:last-child{border-bottom:none;}
 .cat-bd-top{display:flex;justify-content:space-between;margin-bottom:7px;}
 .cat-bd-name{font-size:12px;font-weight:600;color:var(--cream);}
 .cat-bd-pts{font-size:10px;color:var(--muted);}
 .cbd-bar-row{display:flex;align-items:center;gap:7px;margin-bottom:3px;}
 .cbd-bar-row:last-child{margin-bottom:0;}
-.cbd-who{font-size:9px;font-weight:600;width:38px;}
+.cbd-who{font-size:9px;font-weight:600;width:36px;}
 .cbd-who.you{color:var(--g-color);}
 .cbd-who.partner{color:var(--p-color);}
 .cbd-wrap{flex:1;background:var(--surface3);border-radius:4px;height:7px;overflow:hidden;}
@@ -262,38 +248,37 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .cbd-fill.partner{background:var(--p-color);}
 .cbd-pct{font-size:9px;color:var(--muted);width:28px;text-align:right;}
 
-.act-table{margin:0 16px 12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
-.ath{display:grid;grid-template-columns:1fr 64px 64px;padding:7px 12px;background:var(--surface2);border-bottom:1px solid var(--border);}
+.act-table{margin:0 14px 11px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.ath{display:grid;grid-template-columns:1fr 62px 62px;padding:7px 12px;background:var(--surface2);border-bottom:1px solid var(--border);}
 .ath span{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-align:center;}
 .ath span:first-child{text-align:left;color:var(--muted);}
 .ath span.you{color:var(--g-color);}
 .ath span.partner{color:var(--p-color);}
-.atr{display:grid;grid-template-columns:1fr 64px 64px;padding:7px 12px;border-bottom:1px solid var(--border);align-items:center;}
+.atr{display:grid;grid-template-columns:1fr 62px 62px;padding:7px 12px;border-bottom:1px solid var(--border);align-items:center;}
 .atr:last-child{border-bottom:none;}
 .atr.cat{background:var(--surface2);padding:5px 12px;}
 .atr.cat span{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:600;}
 .at-name{font-size:11px;color:var(--text);}
 .at-cell{text-align:center;}
 .at-pct{font-size:11px;font-weight:600;}
-.at-bar-wrap{background:var(--surface3);border-radius:3px;height:3px;margin-top:2px;overflow:hidden;}
-.at-bar{height:100%;border-radius:3px;}
-.at-bar.you{background:var(--g-color);}
-.at-bar.partner{background:var(--p-color);}
+.at-bw{background:var(--surface3);border-radius:3px;height:3px;margin-top:2px;overflow:hidden;}
+.at-bf{height:100%;border-radius:3px;}
+.at-bf.you{background:var(--g-color);}
+.at-bf.partner{background:var(--p-color);}
 
-/* SPENDING SUMMARY */
-.spend-summary{margin:0 16px 12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
-.spend-sum-hdr{padding:10px 14px;background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04));border-bottom:1px solid var(--border);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
-.spend-sum-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);}
+.spend-sum{margin:0 14px 11px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;}
+.spend-sum-hdr{padding:10px 13px;background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(201,168,76,0.04));border-bottom:1px solid var(--border);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);}
+.spend-sum-row{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;border-bottom:1px solid var(--border);}
 .spend-sum-row:last-child{border-bottom:none;}
 .spend-sum-date{font-size:12px;color:var(--text);}
-.spend-sum-vals{display:flex;gap:12px;}
+.spend-sum-vals{display:flex;gap:10px;flex-wrap:wrap;}
 .spend-val{font-size:11px;font-weight:600;}
 .spend-val.you{color:var(--g-color);}
 .spend-val.partner{color:var(--p-color);}
 .spend-val.total{color:var(--gold-light);}
 
-.day-grid{margin:0 16px 12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow-x:auto;}
-.dg-inner{min-width:480px;}
+.day-grid{margin:0 14px 11px;background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow-x:auto;}
+.dg-inner{min-width:460px;}
 .dg-head{display:grid;background:var(--surface2);border-bottom:1px solid var(--border);}
 .dg-head div{padding:7px 3px;text-align:center;font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:600;border-right:1px solid var(--border);}
 .dg-head div:last-child{border-right:none;}
@@ -306,33 +291,28 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .cell-partner{color:var(--p-color);font-weight:600;}
 .cell-win{background:rgba(111,207,151,0.07);}
 
-/* TOAST */
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface2);border:1px solid var(--gold);color:var(--gold-light);padding:10px 20px;border-radius:30px;font-size:12px;font-weight:500;z-index:200;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);}
-.toast.show{transform:translateX(-50%) translateY(0);}
-
 /* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;z-index:100;}
-.bn-item{flex:1;padding:10px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;border:none;background:transparent;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;font-family:'DM Sans',sans-serif;transition:color 0.2s;}
+.bn-item{flex:1;padding:9px 4px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;border:none;background:transparent;color:var(--muted);font-size:9px;letter-spacing:1px;text-transform:uppercase;font-family:'DM Sans',sans-serif;transition:color 0.2s;}
 .bn-item.active{color:var(--gold-light);}
-.bn-icon{font-size:18px;}
+.bn-icon{font-size:17px;}
 
-/* PROFILE SCREEN */
-.profile-wrap{max-width:420px;margin:0 auto;padding:20px 16px;}
-.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px;}
-.profile-card h3{font-family:'Playfair Display',serif;font-size:18px;color:var(--cream);margin-bottom:14px;}
-.profile-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
+/* PROFILE */
+.profile-wrap{max-width:420px;margin:0 auto;padding:16px;}
+.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:11px;}
+.profile-card h3{font-family:'Playfair Display',serif;font-size:17px;color:var(--cream);margin-bottom:12px;}
+.profile-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);}
 .profile-row:last-child{border-bottom:none;}
-.profile-key{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-.profile-val{font-size:13px;color:var(--text);font-weight:500;}
-.logout-btn{width:100%;padding:13px;background:rgba(235,87,87,0.1);border:1px solid rgba(235,87,87,0.3);border-radius:10px;color:#f0a0a0;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
+.profile-key{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.profile-val{font-size:12px;color:var(--text);font-weight:500;}
+.logout-btn{width:100%;padding:12px;background:rgba(235,87,87,0.1);border:1px solid rgba(235,87,87,0.3);border-radius:10px;color:#f0a0a0;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;}
 .logout-btn:hover{background:rgba(235,87,87,0.2);}
 
-.hidden{display:none!important;}
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface2);border:1px solid var(--gold);color:var(--gold-light);padding:10px 20px;border-radius:30px;font-size:12px;font-weight:500;z-index:200;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1);white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
 
-@media(max-width:380px){
-  .lb-row{grid-template-columns:24px 1fr 48px 38px 48px 48px 48px;font-size:10px;gap:3px;}
-  .bw-grid{grid-template-columns:1fr;}
-}
+.hidden{display:none!important;}
 </style>
 </head>
 <body>
@@ -341,7 +321,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 <div id="screen-auth" class="screen active">
   <div class="auth-wrap">
     <div class="auth-logo">
-      <div class="label">Daily Wellness Tracker</div>
+      <div class="lbl">Daily Wellness Tracker</div>
       <h1>G <span>&</span> P<br>Scorecard</h1>
     </div>
     <div class="auth-card">
@@ -350,35 +330,17 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
         <button class="auth-tab" onclick="switchAuthTab('register')">Create Account</button>
       </div>
       <div id="auth-error" class="auth-error"></div>
-
-      <!-- LOGIN -->
+      <div id="auth-success" class="auth-success"></div>
       <div id="form-login">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email"/>
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="login-password" placeholder="Your password" autocomplete="current-password"/>
-        </div>
-        <button class="btn-primary" onclick="doLogin()">Sign In</button>
+        <div class="fg"><label>Email</label><input type="email" id="login-email" placeholder="you@example.com"/></div>
+        <div class="fg"><label>Password</label><input type="password" id="login-password" placeholder="Your password"/></div>
+        <button class="btn-primary" id="login-btn" onclick="doLogin()">Sign In</button>
       </div>
-
-      <!-- REGISTER -->
       <div id="form-register" class="hidden">
-        <div class="form-group">
-          <label>Your Name</label>
-          <input type="text" id="reg-name" placeholder="e.g. Girish or Priya"/>
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email"/>
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="reg-password" placeholder="Min 6 characters" autocomplete="new-password"/>
-        </div>
-        <button class="btn-primary" onclick="doRegister()">Create Account</button>
+        <div class="fg"><label>Your Name</label><input type="text" id="reg-name" placeholder="e.g. Girish or Priya"/></div>
+        <div class="fg"><label>Email</label><input type="email" id="reg-email" placeholder="you@example.com"/></div>
+        <div class="fg"><label>Password</label><input type="password" id="reg-password" placeholder="Min 6 characters"/></div>
+        <button class="btn-primary" id="reg-btn" onclick="doRegister()">Create Account</button>
       </div>
     </div>
   </div>
@@ -387,201 +349,169 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 <!-- INVITE SCREEN -->
 <div id="screen-invite" class="screen">
   <div class="invite-wrap">
-    <div class="auth-logo" style="padding:30px 0 24px">
-      <div class="label">Almost Ready</div>
+    <div class="auth-logo" style="padding:24px 0 20px">
+      <div class="lbl">Step 2 of 2</div>
       <h1>Connect <span>Partner</span></h1>
     </div>
+
+    <!-- YOUR CODE -->
     <div class="invite-card">
-      <p>Connect with your partner to share the scorecard in real-time.</p>
-
-      <div id="invite-status" class="invite-status">
-        <div style="font-size:11px;color:var(--muted)">Your Partner</div>
-        <div class="partner-name" id="partner-display">Not connected yet</div>
+      <h2>Your Invite Code</h2>
+      <p>Share this code with your partner. They enter it after registering to link your accounts.</p>
+      <div class="code-display">
+        <div class="code-label">Your Code</div>
+        <div class="code-value" id="my-invite-code">------</div>
+        <div class="code-sub">Valid forever · Share via WhatsApp</div>
       </div>
-
-      <div class="form-group" style="text-align:left;margin-top:16px">
-        <label>Send Invite to Partner's Email</label>
-        <input type="email" id="invite-email" placeholder="partner@example.com"/>
-      </div>
-      <button class="btn-primary" onclick="sendInvite()">Send Invite 💌</button>
-
-      <div class="or-divider">or</div>
-
-      <div id="pending-invites-section" class="hidden">
-        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;">Pending Invites</div>
-        <div id="pending-invites-list"></div>
-      </div>
-
-      <button class="btn-secondary" onclick="skipInvite()" id="skip-btn">Continue Solo for Now</button>
+      <button class="btn-copy" onclick="copyCode()">📋 Copy Code</button>
+      <button class="btn-copy" onclick="shareWhatsApp()" style="background:rgba(37,211,102,0.1);border-color:#25d366;color:#25d366;">💬 Share on WhatsApp</button>
     </div>
+
+    <!-- ENTER PARTNER CODE -->
+    <div class="invite-card">
+      <h2>Have a Code?</h2>
+      <p>If your partner already registered and shared their code, enter it below.</p>
+      <div class="fg"><label>Partner's Invite Code</label><input type="text" id="partner-code-input" placeholder="e.g. GP7823" maxlength="6" style="text-transform:uppercase;letter-spacing:4px;font-size:18px;text-align:center;font-weight:700;"/></div>
+      <div id="invite-error" class="auth-error"></div>
+      <button class="btn-primary" onclick="joinWithCode()">Connect with Partner ✓</button>
+    </div>
+
+    <button class="btn-secondary" onclick="skipInvite()">Continue Solo for Now</button>
   </div>
 </div>
 
 <!-- MAIN APP -->
 <div id="screen-app" class="screen">
   <div class="top-bar">
-    <div class="top-bar-left">
-      <div>
-        <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold)">Scorecard</div>
-        <div class="top-bar h2" style="font-family:'Playfair Display',serif;font-size:16px;color:var(--cream);font-weight:700;" id="top-bar-name">G & P</div>
-      </div>
+    <div>
+      <div class="top-bar-sub">Scorecard</div>
+      <div class="top-bar-title" id="top-bar-name">G & P</div>
     </div>
-    <div class="top-bar-right">
+    <div style="display:flex;align-items:center;gap:8px;">
       <span id="live-indicator" class="hidden" style="font-size:10px;color:var(--win);display:flex;align-items:center;"><span class="live-dot"></span>LIVE</span>
-      <button class="icon-btn" onclick="showScreen('profile')" title="Profile">👤</button>
+      <button class="icon-btn" onclick="showScreen('profile')">👤</button>
     </div>
   </div>
 
-  <div id="app-content">
-    <!-- Daily / Weekly / Monthly tabs -->
-    <div class="tabs">
-      <button class="tab active" onclick="showTab('daily')">Daily</button>
-      <button class="tab" onclick="showTab('weekly')">Weekly</button>
-      <button class="tab" onclick="showTab('monthly')">Monthly</button>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('daily')">Daily</button>
+    <button class="tab" onclick="showTab('weekly')">Weekly</button>
+    <button class="tab" onclick="showTab('monthly')">Monthly</button>
+  </div>
+
+  <!-- DAILY -->
+  <div id="tab-daily">
+    <div class="date-nav">
+      <button class="nav-btn" onclick="changeDay(-1)">&#8249;</button>
+      <div><div class="date-main" id="date-main"></div><div class="date-sub" id="date-sub"></div></div>
+      <button class="nav-btn" onclick="changeDay(1)">&#8250;</button>
     </div>
 
-    <!-- DAILY -->
-    <div id="tab-daily">
-      <div class="date-nav">
-        <button class="nav-btn" onclick="changeDay(-1)">&#8249;</button>
-        <div class="date-display">
-          <div class="date-main" id="date-main"></div>
-          <div class="date-sub" id="date-sub"></div>
-        </div>
-        <button class="nav-btn" onclick="changeDay(1)">&#8250;</button>
+    <div class="score-top">
+      <div class="score-hero you" id="score-you">
+        <div class="s-lbl">You</div>
+        <div class="s-name" id="your-name-d">—</div>
+        <div class="s-pts" id="pts-you">0</div>
+        <div class="s-of" id="of-you">of 0 pts</div>
+        <div class="s-pct" id="pct-you">0%</div>
+        <div class="s-tag" id="tag-you"></div>
+        <div class="s-streak" id="streak-you"></div>
       </div>
-
-      <div class="score-top">
-        <div class="score-hero you" id="score-you">
-          <div class="s-label">You</div>
-          <div class="s-name-display" id="your-name-display">—</div>
-          <div class="s-pts" id="pts-you">0</div>
-          <div class="s-of" id="of-you">of 0 pts</div>
-          <div class="s-pct" id="pct-you">0%</div>
-          <div class="s-tag" id="tag-you"></div>
-          <div class="s-streak" id="streak-you"></div>
-        </div>
-        <div class="vs-col"><div class="vs-text">VS</div><div class="vs-sub">live</div></div>
-        <div class="score-hero partner" id="score-partner">
-          <div class="s-label">Partner</div>
-          <div class="s-name-display" id="partner-name-display">—</div>
-          <div class="s-pts" id="pts-partner">0</div>
-          <div class="s-of" id="of-partner">of 0 pts</div>
-          <div class="s-pct" id="pct-partner">0%</div>
-          <div class="s-tag" id="tag-partner"></div>
-          <div class="s-streak" id="streak-partner"></div>
-        </div>
+      <div class="vs-col"><div class="vs-text">VS</div><div class="vs-sub">live</div></div>
+      <div class="score-hero partner" id="score-partner">
+        <div class="s-lbl">Partner</div>
+        <div class="s-name" id="partner-name-d">—</div>
+        <div class="s-pts" id="pts-partner">0</div>
+        <div class="s-of" id="of-partner">of 0 pts</div>
+        <div class="s-pct" id="pct-partner">0%</div>
+        <div class="s-tag" id="tag-partner"></div>
+        <div class="s-streak" id="streak-partner"></div>
       </div>
-
-      <div class="cat-scores" id="cat-scores-area"></div>
-
-      <!-- SPENDING -->
-      <div class="spending-card">
-        <div class="spending-header">
-          <span class="spending-title">💰 Day Spending</span>
-          <span class="spending-total" id="spending-total">₹0 combined</span>
-        </div>
-        <div class="spending-body">
-          <div class="spending-row">
-            <div class="spending-who you" id="spend-your-name">You</div>
-            <div class="spending-input-wrap">
-              <span>₹</span>
-              <input type="number" class="spending-input" id="spend-you-input" placeholder="0" min="0" oninput="updateSpending()"/>
-            </div>
-          </div>
-          <div class="spending-row">
-            <div class="spending-who partner" id="spend-partner-name">Partner</div>
-            <div class="spending-amount partner" id="spend-partner-amount">₹0</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="missed-bar" id="missed-bar">
-        <div class="missed-title">&#9888; Missed Activities</div>
-        <div class="missed-list" id="missed-list"></div>
-      </div>
-
-      <button class="breakdown-toggle" id="bd-toggle" onclick="toggleBreakdown()">&#9660; ACTIVITY BREAKDOWN</button>
-      <div class="breakdown-panel hidden" id="breakdown-panel">
-        <div class="bd-header"><span>Activity</span><span class="you" id="bd-you-hdr">You</span><span class="partner" id="bd-partner-hdr">Partner</span></div>
-        <div id="breakdown-rows"></div>
-      </div>
-
-      <div class="col-headers">
-        <div></div>
-        <div class="col-header you" id="col-you">You</div>
-        <div class="col-header partner" id="col-partner">Partner</div>
-      </div>
-
-      <!-- MORNING -->
-      <div class="section">
-        <div class="section-header"><div class="sh-left"><span>🌅</span><span class="sh-title">Morning</span></div><span class="sh-pts" id="sec-pts-morning"></span></div>
-        <div class="activity-row"><div class="act-label">Morning Water<div class="sub">Plain / Aloe / Turmeric / Lemon</div><div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-water"></div></div><div class="act-cell"><div class="tg" id="tg-partner-water"></div></div></div>
-        <div class="activity-row"><div class="act-label">Yoga / Surya Namaskar<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-yoga"></div></div><div class="act-cell"><div class="tg" id="tg-partner-yoga"></div></div></div>
-        <div class="activity-row"><div class="act-label">Morning Walk<div class="sub">You: 20–30 min · Partner: 10–15 min</div><div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-walk"></div></div><div class="act-cell"><div class="tg" id="tg-partner-walk"></div></div></div>
-        <div class="activity-row"><div class="act-label">Water Intake (2L)<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-water2l"></div></div><div class="act-cell"><div class="tg" id="tg-partner-water2l"></div></div></div>
-        <div class="activity-row"><div class="act-label">Meditation / Breathing<div class="sub">5–10 minutes</div><div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-meditation"></div></div><div class="act-cell"><div class="tg" id="tg-partner-meditation"></div></div></div>
-      </div>
-
-      <!-- HOME -->
-      <div class="section">
-        <div class="section-header"><div class="sh-left"><span>🏠</span><span class="sh-title">Home</span></div><span class="sh-pts" id="sec-pts-home"></span></div>
-        <div class="activity-row"><div class="act-label">Home Task<div class="sub">Cleaning / Laundry / Cooking</div><div class="pts">10 pts · N/A ok</div></div><div class="act-cell"><div class="tg" id="tg-you-home"></div></div><div class="act-cell"><div class="tg" id="tg-partner-home"></div></div></div>
-      </div>
-
-      <!-- DINNER -->
-      <div class="section">
-        <div class="section-header"><div class="sh-left"><span>🍳</span><span class="sh-title">Dinner</span></div><span class="sh-pts" id="sec-pts-dinner"></span></div>
-        <div class="activity-row"><div class="act-label">Cook Dinner<div class="sub" id="dinner-sub"></div><div class="pts">10 pts · N/A ok</div></div><div class="act-cell"><div class="tg" id="tg-you-dinner"></div></div><div class="act-cell"><div class="tg" id="tg-partner-dinner"></div></div></div>
-      </div>
-
-      <!-- NIGHT -->
-      <div class="section">
-        <div class="section-header"><div class="sh-left"><span>🌙</span><span class="sh-title">Night</span></div><span class="sh-pts" id="sec-pts-night"></span></div>
-        <div class="activity-row"><div class="act-label">Post-Dinner Walk<div class="sub">10 minutes</div><div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-nightwalk"></div></div><div class="act-cell"><div class="tg" id="tg-partner-nightwalk"></div></div></div>
-        <div class="activity-row"><div class="act-label">Clean Kitchen<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-kitchen"></div></div><div class="act-cell"><div class="tg" id="tg-partner-kitchen"></div></div></div>
-        <div class="activity-row"><div class="act-label">15-min Reading<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-reading"></div></div><div class="act-cell"><div class="tg" id="tg-partner-reading"></div></div></div>
-        <div class="activity-row"><div class="act-label">Gratitude Journaling<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-gratitude"></div></div><div class="act-cell"><div class="tg" id="tg-partner-gratitude"></div></div></div>
-        <div class="activity-row"><div class="act-label">Sleep by 11 PM<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-sleep"></div></div><div class="act-cell"><div class="tg" id="tg-partner-sleep"></div></div></div>
-      </div>
-
-      <button class="save-btn" onclick="saveDay()">💾 &nbsp; Save & Sync</button>
-      <div style="height:16px"></div>
     </div>
 
-    <!-- WEEKLY -->
-    <div id="tab-weekly" class="hidden">
-      <div class="period-nav">
-        <button class="nav-btn" onclick="changeWeek(-1)">&#8249;</button>
-        <div class="period-label" id="week-label"></div>
-        <button class="nav-btn" onclick="changeWeek(1)">&#8250;</button>
+    <div class="cat-scores" id="cat-scores-area"></div>
+
+    <div class="spending-card">
+      <div class="spending-hdr">
+        <span class="spending-title">💰 Day Spending</span>
+        <span class="spending-total" id="spending-total">₹0 combined</span>
       </div>
-      <div id="weekly-content"></div>
+      <div class="spending-body">
+        <div class="spend-row">
+          <div class="spend-who you" id="spend-your-name">You</div>
+          <div class="spend-input-wrap"><span>₹</span><input type="number" class="spend-input" id="spend-you-input" placeholder="0" min="0" oninput="updateSpending()"/></div>
+        </div>
+        <div class="spend-row">
+          <div class="spend-who partner" id="spend-partner-name">Partner</div>
+          <div class="spend-amt partner" id="spend-partner-amount">₹0</div>
+        </div>
+      </div>
     </div>
 
-    <!-- MONTHLY -->
-    <div id="tab-monthly" class="hidden">
-      <div class="period-nav">
-        <button class="nav-btn" onclick="changeMonth(-1)">&#8249;</button>
-        <div class="period-label" id="month-label"></div>
-        <button class="nav-btn" onclick="changeMonth(1)">&#8250;</button>
-      </div>
-      <div id="monthly-content"></div>
+    <div class="missed-bar" id="missed-bar"><div class="missed-title">⚠ Missed Activities</div><div class="missed-list" id="missed-list"></div></div>
+
+    <button class="bd-toggle" id="bd-toggle" onclick="toggleBreakdown()">▼ ACTIVITY BREAKDOWN</button>
+    <div class="bd-panel hidden" id="bd-panel">
+      <div class="bd-hdr"><span>Activity</span><span class="you" id="bd-you-h">You</span><span class="partner" id="bd-partner-h">Partner</span></div>
+      <div id="bd-rows"></div>
     </div>
+
+    <div class="col-hdrs"><div></div><div class="col-hdr you" id="col-you">You</div><div class="col-hdr partner" id="col-partner">Partner</div></div>
+
+    <div class="section">
+      <div class="sec-hdr"><div class="sec-hdr-l"><span>🌅</span><span class="sec-title">Morning</span></div><span class="sec-pts" id="sec-pts-morning"></span></div>
+      <div class="act-row"><div class="act-lbl">Morning Water<div class="sub">Plain/Aloe/Turmeric/Lemon</div><div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-water"></div></div><div class="act-cell"><div class="tg" id="tg-partner-water"></div></div></div>
+      <div class="act-row"><div class="act-lbl">Yoga / Surya Namaskar<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-yoga"></div></div><div class="act-cell"><div class="tg" id="tg-partner-yoga"></div></div></div>
+      <div class="act-row"><div class="act-lbl">Morning Walk<div class="sub">You: 20–30 min · Partner: 10–15 min</div><div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-walk"></div></div><div class="act-cell"><div class="tg" id="tg-partner-walk"></div></div></div>
+      <div class="act-row"><div class="act-lbl">Water Intake 2L<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-water2l"></div></div><div class="act-cell"><div class="tg" id="tg-partner-water2l"></div></div></div>
+      <div class="act-row"><div class="act-lbl">Meditation / Breathing<div class="sub">5–10 min</div><div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-meditation"></div></div><div class="act-cell"><div class="tg" id="tg-partner-meditation"></div></div></div>
+    </div>
+
+    <div class="section">
+      <div class="sec-hdr"><div class="sec-hdr-l"><span>🏠</span><span class="sec-title">Home</span></div><span class="sec-pts" id="sec-pts-home"></span></div>
+      <div class="act-row"><div class="act-lbl">Home Task<div class="sub">Cleaning/Laundry/Cooking</div><div class="pts">10 pts · N/A ok</div></div><div class="act-cell"><div class="tg" id="tg-you-home"></div></div><div class="act-cell"><div class="tg" id="tg-partner-home"></div></div></div>
+    </div>
+
+    <div class="section">
+      <div class="sec-hdr"><div class="sec-hdr-l"><span>🍳</span><span class="sec-title">Dinner</span></div><span class="sec-pts" id="sec-pts-dinner"></span></div>
+      <div class="act-row"><div class="act-lbl">Cook Dinner<div class="sub" id="dinner-sub"></div><div class="pts">10 pts · N/A ok</div></div><div class="act-cell"><div class="tg" id="tg-you-dinner"></div></div><div class="act-cell"><div class="tg" id="tg-partner-dinner"></div></div></div>
+    </div>
+
+    <div class="section">
+      <div class="sec-hdr"><div class="sec-hdr-l"><span>🌙</span><span class="sec-title">Night</span></div><span class="sec-pts" id="sec-pts-night"></span></div>
+      <div class="act-row"><div class="act-lbl">Post-Dinner Walk<div class="sub">10 min</div><div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-nightwalk"></div></div><div class="act-cell"><div class="tg" id="tg-partner-nightwalk"></div></div></div>
+      <div class="act-row"><div class="act-lbl">Clean Kitchen<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-kitchen"></div></div><div class="act-cell"><div class="tg" id="tg-partner-kitchen"></div></div></div>
+      <div class="act-row"><div class="act-lbl">15-min Reading<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-reading"></div></div><div class="act-cell"><div class="tg" id="tg-partner-reading"></div></div></div>
+      <div class="act-row"><div class="act-lbl">Gratitude Journaling<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-gratitude"></div></div><div class="act-cell"><div class="tg" id="tg-partner-gratitude"></div></div></div>
+      <div class="act-row"><div class="act-lbl">Sleep by 11 PM<div class="pts">10 pts</div></div><div class="act-cell"><div class="tg" id="tg-you-sleep"></div></div><div class="act-cell"><div class="tg" id="tg-partner-sleep"></div></div></div>
+    </div>
+
+    <button class="save-btn" onclick="saveDay()">💾 &nbsp; Save & Sync</button>
+    <div style="height:16px"></div>
+  </div>
+
+  <div id="tab-weekly" class="hidden">
+    <div class="period-nav"><button class="nav-btn" onclick="changeWeek(-1)">&#8249;</button><div class="period-lbl" id="week-label"></div><button class="nav-btn" onclick="changeWeek(1)">&#8250;</button></div>
+    <div id="weekly-content"></div>
+  </div>
+
+  <div id="tab-monthly" class="hidden">
+    <div class="period-nav"><button class="nav-btn" onclick="changeMonth(-1)">&#8249;</button><div class="period-lbl" id="month-label"></div><button class="nav-btn" onclick="changeMonth(1)">&#8250;</button></div>
+    <div id="monthly-content"></div>
   </div>
 
   <div class="bottom-nav">
-    <button class="bn-item active" onclick="showBottomTab('scorecard')"><span class="bn-icon">📋</span>Scorecard</button>
-    <button class="bn-item" onclick="showBottomTab('spending')"><span class="bn-icon">💰</span>Spending</button>
+    <button class="bn-item active" onclick="showBottomTab(0)"><span class="bn-icon">📋</span>Scorecard</button>
+    <button class="bn-item" onclick="showScreen('invite')"><span class="bn-icon">🔗</span>Invite</button>
     <button class="bn-item" onclick="showScreen('profile')"><span class="bn-icon">👤</span>Profile</button>
   </div>
 </div>
 
 <!-- PROFILE SCREEN -->
 <div id="screen-profile" class="screen">
-  <div style="background:var(--surface);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px;">
+  <div style="background:var(--surface);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:10px;">
     <button class="nav-btn" onclick="showScreen('app')">&#8249;</button>
-    <span style="font-family:'Playfair Display',serif;font-size:18px;color:var(--cream);">Profile</span>
+    <span style="font-family:'Playfair Display',serif;font-size:17px;color:var(--cream);">Profile</span>
   </div>
   <div class="profile-wrap">
     <div class="profile-card">
@@ -589,19 +519,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
       <div class="profile-row"><span class="profile-key">Name</span><span class="profile-val" id="prof-name">—</span></div>
       <div class="profile-row"><span class="profile-key">Email</span><span class="profile-val" id="prof-email">—</span></div>
       <div class="profile-row"><span class="profile-key">Partner</span><span class="profile-val" id="prof-partner">Not connected</span></div>
-      <div class="profile-row"><span class="profile-key">Household</span><span class="profile-val" id="prof-household">—</span></div>
-    </div>
-    <div class="profile-card">
-      <h3>Partner Invite</h3>
-      <div class="form-group">
-        <label>Invite by Email</label>
-        <input type="email" id="prof-invite-email" placeholder="partner@example.com"/>
-      </div>
-      <button class="btn-primary" onclick="sendInviteFromProfile()">Send Invite 💌</button>
-      <div id="prof-pending" class="hidden" style="margin-top:14px;">
-        <div style="font-size:11px;color:var(--muted);margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;">Pending Invites For You</div>
-        <div id="prof-pending-list"></div>
-      </div>
+      <div class="profile-row"><span class="profile-key">Your Code</span><span class="profile-val" id="prof-code" style="color:var(--gold-light);font-weight:700;letter-spacing:3px;">—</span></div>
     </div>
     <button class="logout-btn" onclick="doLogout()">Sign Out</button>
   </div>
@@ -609,378 +527,321 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 
 <div class="toast" id="toast"></div>
 
-<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, query, where, getDocs, addDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, query, where, getDocs, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDaxkUezuJpvZcjZNz8sU3qsufUAxRbR-g",
-  authDomain: "gp-scorecard.firebaseapp.com",
-  projectId: "gp-scorecard",
-  storageBucket: "gp-scorecard.firebasestorage.app",
-  messagingSenderId: "339842535646",
-  appId: "1:339842535646:web:90fa70f355dfaddb26724f"
-};
-
-const app = initializeApp(firebaseConfig);
+const app = initializeApp({
+  apiKey:"AIzaSyDaxkUezuJpvZcjZNz8sU3qsufUAxRbR-g",
+  authDomain:"gp-scorecard.firebaseapp.com",
+  projectId:"gp-scorecard",
+  storageBucket:"gp-scorecard.firebasestorage.app",
+  messagingSenderId:"339842535646",
+  appId:"1:339842535646:web:90fa70f355dfaddb26724f"
+});
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ============ STATE ============
-let currentUser = null;
-let userProfile = null;
-let householdId = null;
-let partnerProfile = null;
-let currentDate = new Date(); currentDate.setHours(0,0,0,0);
-let weekOff = 0, monthOff = 0;
-let currentDayData = null;
-let partnerDayData = null;
-let dayUnsubscribe = null;
-let breakdownOpen = false;
-let spendDebounce = null;
-
-const ACTS = [
-  {key:'water',     label:'Morning Water',    cat:'morning', hasNA:false},
-  {key:'yoga',      label:'Yoga/Workout',     cat:'morning', hasNA:false},
-  {key:'walk',      label:'Morning Walk',     cat:'morning', hasNA:false},
-  {key:'water2l',   label:'Water 2L',         cat:'morning', hasNA:false},
-  {key:'meditation',label:'Meditation',       cat:'morning', hasNA:false},
-  {key:'home',      label:'Home Task',        cat:'home',    hasNA:true },
-  {key:'dinner',    label:'Dinner',           cat:'dinner',  hasNA:true },
-  {key:'nightwalk', label:'Night Walk',       cat:'night',   hasNA:false},
-  {key:'kitchen',   label:'Kitchen Clean',    cat:'night',   hasNA:false},
-  {key:'reading',   label:'Reading',          cat:'night',   hasNA:false},
-  {key:'gratitude', label:'Gratitude',        cat:'night',   hasNA:false},
-  {key:'sleep',     label:'Sleep 11PM',       cat:'night',   hasNA:false},
+// ============ DATA ============
+const ACTS=[
+  {key:'water',label:'Morning Water',cat:'morning',hasNA:false},
+  {key:'yoga',label:'Yoga/Workout',cat:'morning',hasNA:false},
+  {key:'walk',label:'Morning Walk',cat:'morning',hasNA:false},
+  {key:'water2l',label:'Water 2L',cat:'morning',hasNA:false},
+  {key:'meditation',label:'Meditation',cat:'morning',hasNA:false},
+  {key:'home',label:'Home Task',cat:'home',hasNA:true},
+  {key:'dinner',label:'Dinner',cat:'dinner',hasNA:true},
+  {key:'nightwalk',label:'Night Walk',cat:'night',hasNA:false},
+  {key:'kitchen',label:'Kitchen Clean',cat:'night',hasNA:false},
+  {key:'reading',label:'Reading',cat:'night',hasNA:false},
+  {key:'gratitude',label:'Gratitude',cat:'night',hasNA:false},
+  {key:'sleep',label:'Sleep 11PM',cat:'night',hasNA:false},
 ];
-const CATS = {morning:{label:'Morning',icon:'🌅'},home:{label:'Home',icon:'🏠'},dinner:{label:'Dinner',icon:'🍳'},night:{label:'Night',icon:'🌙'}};
-const DS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const MN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const CATS={morning:{label:'Morning',icon:'🌅'},home:{label:'Home',icon:'🏠'},dinner:{label:'Dinner',icon:'🍳'},night:{label:'Night',icon:'🌙'}};
+const DS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MN=['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-// ============ AUTH ============
-window.switchAuthTab = (tab) => {
-  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',i===(tab==='login'?0:1)));
-  document.getElementById('form-login').classList.toggle('hidden', tab!=='login');
-  document.getElementById('form-register').classList.toggle('hidden', tab!=='register');
-  document.getElementById('auth-error').style.display='none';
-};
+let currentUser=null, userProfile=null, householdId=null, partnerProfile=null;
+let currentDate=new Date(); currentDate.setHours(0,0,0,0);
+let weekOff=0, monthOff=0;
+let currentDayData=null, partnerDayData=null;
+let dayUnsub=null, breakdownOpen=false, spendDebounce=null;
 
-window.doLogin = async () => {
-  const email = document.getElementById('login-email').value.trim();
-  const pass  = document.getElementById('login-password').value;
-  const errEl = document.getElementById('auth-error');
-  errEl.style.display='none';
-  if(!email||!pass){showAuthError('Please fill all fields');return;}
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-  } catch(e) {
-    showAuthError(e.code==='auth/invalid-credential'?'Invalid email or password':e.message);
-  }
-};
+// ============ HELPERS ============
+function dateKey(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function myDayPath(d){return `households/${householdId}/days/${dateKey(d)}_${currentUser.uid}`;}
+function partnerDayPath(d){const pid=partnerProfile?.uid;if(!pid)return null;return `households/${householdId}/days/${dateKey(d)}_${pid}`;}
+function initEmptyDay(){const s={};ACTS.forEach(a=>{s[a.key]=null;});s.spending=0;return s;}
+function getDinnerInfo(d){const day=d.getDay();if(day===0)return{note:'Sunday — Dining Out 🍽️'};if([1,2,3].includes(day))return{note:'Mon–Wed rotation'};return{note:'Thu–Sat rotation'};}
 
-window.doRegister = async () => {
-  const name  = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const pass  = document.getElementById('reg-password').value;
-  if(!name||!email||!pass){showAuthError('Please fill all fields');return;}
-  if(pass.length<6){showAuthError('Password must be at least 6 characters');return;}
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-    await updateProfile(cred.user, {displayName: name});
-    await setDoc(doc(db,'users',cred.user.uid),{
-      name, email, uid: cred.user.uid,
-      householdId: null, createdAt: serverTimestamp()
-    });
-  } catch(e) {
-    showAuthError(e.code==='auth/email-already-in-use'?'Email already registered':e.message);
-  }
-};
-
-function showAuthError(msg){
-  const el=document.getElementById('auth-error');
-  el.textContent=msg; el.style.display='block';
+// ============ GENERATE INVITE CODE ============
+function generateCode(uid){
+  // Deterministic 6-char code from uid
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code='';
+  for(let i=0;i<6;i++) code+=chars[uid.charCodeAt(i%uid.length)%chars.length];
+  return code;
 }
 
-window.doLogout = async () => {
-  if(dayUnsubscribe) dayUnsubscribe();
+// ============ AUTH ============
+window.switchAuthTab=(tab)=>{
+  document.querySelectorAll('.auth-tab').forEach((t,i)=>t.classList.toggle('active',i===(tab==='login'?0:1)));
+  document.getElementById('form-login').classList.toggle('hidden',tab!=='login');
+  document.getElementById('form-register').classList.toggle('hidden',tab!=='register');
+  document.getElementById('auth-error').style.display='none';
+  document.getElementById('auth-success').style.display='none';
+};
+
+window.doLogin=async()=>{
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-password').value;
+  const errEl=document.getElementById('auth-error');
+  errEl.style.display='none';
+  if(!email||!pass){showErr(errEl,'Please fill all fields');return;}
+  const btn=document.getElementById('login-btn');
+  btn.disabled=true; btn.textContent='Signing in...';
+  try{
+    await signInWithEmailAndPassword(auth,email,pass);
+  }catch(e){
+    btn.disabled=false; btn.textContent='Sign In';
+    const msg=e.code==='auth/invalid-credential'||e.code==='auth/wrong-password'?'Wrong email or password':
+              e.code==='auth/user-not-found'?'No account with this email':
+              e.code==='auth/invalid-email'?'Invalid email format':e.message;
+    showErr(errEl,msg);
+  }
+};
+
+window.doRegister=async()=>{
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const pass=document.getElementById('reg-password').value;
+  const errEl=document.getElementById('auth-error');
+  errEl.style.display='none';
+  if(!name||!email||!pass){showErr(errEl,'Please fill all fields');return;}
+  if(pass.length<6){showErr(errEl,'Password must be at least 6 characters');return;}
+  const btn=document.getElementById('reg-btn');
+  btn.disabled=true; btn.textContent='Creating account...';
+  try{
+    const cred=await createUserWithEmailAndPassword(auth,email,pass);
+    await updateProfile(cred.user,{displayName:name});
+    const code=generateCode(cred.user.uid);
+    await setDoc(doc(db,'users',cred.user.uid),{
+      name,email,uid:cred.user.uid,
+      inviteCode:code,householdId:null,
+      createdAt:serverTimestamp()
+    });
+  }catch(e){
+    btn.disabled=false; btn.textContent='Create Account';
+    const msg=e.code==='auth/email-already-in-use'?'Email already registered':e.message;
+    showErr(errEl,msg);
+  }
+};
+
+function showErr(el,msg){el.textContent=msg;el.style.display='block';}
+
+window.doLogout=async()=>{
+  if(dayUnsub)dayUnsub();
   await signOut(auth);
 };
 
 // ============ AUTH STATE ============
-onAuthStateChanged(auth, async (user) => {
-  if(!user){
-    currentUser=null; userProfile=null; householdId=null; partnerProfile=null;
-    showScreen('auth'); return;
+onAuthStateChanged(auth,async(user)=>{
+  if(!user){currentUser=null;userProfile=null;householdId=null;partnerProfile=null;showScreen('auth');return;}
+  currentUser=user;
+  const snap=await getDoc(doc(db,'users',user.uid));
+  if(snap.exists()) userProfile=snap.data();
+  else{
+    const code=generateCode(user.uid);
+    userProfile={name:user.displayName||'You',email:user.email,uid:user.uid,inviteCode:code,householdId:null};
+    await setDoc(doc(db,'users',user.uid),{...userProfile,createdAt:serverTimestamp()});
   }
-  currentUser = user;
-  const snap = await getDoc(doc(db,'users',user.uid));
-  if(snap.exists()) userProfile = snap.data();
-  else {
-    userProfile = {name:user.displayName||'You', email:user.email, uid:user.uid, householdId:null};
-    await setDoc(doc(db,'users',user.uid), userProfile);
+  // Ensure invite code exists
+  if(!userProfile.inviteCode){
+    userProfile.inviteCode=generateCode(user.uid);
+    await updateDoc(doc(db,'users',user.uid),{inviteCode:userProfile.inviteCode});
   }
 
   if(userProfile.householdId){
-    householdId = userProfile.householdId;
+    householdId=userProfile.householdId;
     await loadPartner();
     showScreen('app');
     initApp();
-  } else {
+  }else{
     showScreen('invite');
-    loadPendingInvites();
+    showMyCode();
   }
 });
 
-// ============ INVITE ============
-window.sendInvite = async () => {
-  const email = document.getElementById('invite-email').value.trim();
-  await doSendInvite(email);
+// ============ INVITE CODE ============
+function showMyCode(){
+  const code=userProfile?.inviteCode||'------';
+  document.getElementById('my-invite-code').textContent=code;
+  document.getElementById('prof-code').textContent=code;
+}
+
+window.copyCode=()=>{
+  const code=userProfile?.inviteCode||'';
+  navigator.clipboard?.writeText(code).then(()=>showToast('Code copied: '+code))
+  .catch(()=>{
+    // fallback
+    const el=document.createElement('textarea');
+    el.value=code; document.body.appendChild(el);
+    el.select(); document.execCommand('copy');
+    document.body.removeChild(el);
+    showToast('Code copied: '+code);
+  });
 };
-window.sendInviteFromProfile = async () => {
-  const email = document.getElementById('prof-invite-email').value.trim();
-  await doSendInvite(email);
+
+window.shareWhatsApp=()=>{
+  const code=userProfile?.inviteCode||'';
+  const msg=`Hi! Join me on G & P Scorecard 🏆\n\n1. Open: https://girish7323.github.io/gp-scorecard\n2. Create an account\n3. Enter my invite code: *${code}*\n\nLet's track our daily habits together! 💪`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank');
 };
 
-async function doSendInvite(email){
-  if(!email){showToast('Enter partner email');return;}
-  try {
-    // Find partner user
-    const q = query(collection(db,'users'), where('email','==',email));
-    const snap = await getDocs(q);
-    if(snap.empty){showToast('No account found with that email');return;}
-    const partnerDoc = snap.docs[0];
-    const partnerId = partnerDoc.id;
+window.joinWithCode=async()=>{
+  const code=document.getElementById('partner-code-input').value.trim().toUpperCase();
+  const errEl=document.getElementById('invite-error');
+  errEl.style.display='none';
+  if(!code||code.length<4){showErr(errEl,'Enter a valid invite code');return;}
+  if(code===userProfile?.inviteCode){showErr(errEl,"That's your own code!");return;}
 
-    if(partnerId === currentUser.uid){showToast("That's your own email!");return;}
+  try{
+    // Find user with this invite code
+    const q=query(collection(db,'users'),where('inviteCode','==',code));
+    const snap=await getDocs(q);
+    if(snap.empty){showErr(errEl,'Code not found. Check and try again.');return;}
 
-    // Check if already in same household
-    if(userProfile.householdId && partnerDoc.data().householdId === userProfile.householdId){
-      showToast('Already partners!');return;
+    const partnerDoc=snap.docs[0];
+    const partnerId=partnerDoc.id;
+    const pData=partnerDoc.data();
+
+    if(pData.householdId&&pData.householdId===userProfile.householdId){
+      showErr(errEl,'Already connected!');return;
     }
 
-    // Create invite
-    await addDoc(collection(db,'invites'),{
-      fromUid: currentUser.uid,
-      fromName: userProfile.name,
-      fromEmail: userProfile.email,
-      toUid: partnerId,
-      toEmail: email,
-      status: 'pending',
-      createdAt: serverTimestamp()
-    });
-    showToast('Invite sent to '+email+' 💌');
-  } catch(e){ showToast('Error: '+e.message); }
-}
-
-async function loadPendingInvites(){
-  const q = query(collection(db,'invites'), where('toUid','==',currentUser.uid), where('status','==','pending'));
-  const snap = await getDocs(q);
-  const inviteSection = document.getElementById('pending-invites-section');
-  const inviteList = document.getElementById('pending-invites-list');
-  const profPending = document.getElementById('prof-pending');
-  const profList = document.getElementById('prof-pending-list');
-
-  if(!snap.empty){
-    inviteSection?.classList.remove('hidden');
-    profPending?.classList.remove('hidden');
-    const html = snap.docs.map(d=>{
-      const inv = d.data();
-      return `<div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;">
-        <div style="font-size:13px;color:var(--cream);margin-bottom:8px;"><strong>${inv.fromName}</strong> (${inv.fromEmail}) invited you</div>
-        <div style="display:flex;gap:8px;">
-          <button onclick="acceptInvite('${d.id}','${inv.fromUid}')" style="flex:1;padding:8px;background:rgba(111,207,151,0.2);border:1px solid var(--win);border-radius:8px;color:var(--win);font-weight:600;cursor:pointer;font-size:12px;">Accept ✓</button>
-          <button onclick="declineInvite('${d.id}')" style="flex:1;padding:8px;background:rgba(235,87,87,0.1);border:1px solid var(--lose);border-radius:8px;color:#f0a0a0;font-weight:600;cursor:pointer;font-size:12px;">Decline ✗</button>
-        </div>
-      </div>`;
-    }).join('');
-    if(inviteList) inviteList.innerHTML = html;
-    if(profList) profList.innerHTML = html;
-  }
-}
-
-window.acceptInvite = async (inviteId, fromUid) => {
-  try {
     // Create household
-    const hRef = await addDoc(collection(db,'households'),{
-      members: [currentUser.uid, fromUid],
-      createdAt: serverTimestamp()
+    const hId=currentUser.uid+'_'+partnerId;
+    await setDoc(doc(db,'households',hId),{
+      members:[currentUser.uid,partnerId],
+      names:{[currentUser.uid]:userProfile.name,[partnerId]:pData.name},
+      createdAt:serverTimestamp()
     });
-    householdId = hRef.id;
 
     // Update both users
-    await updateDoc(doc(db,'users',currentUser.uid),{householdId: hRef.id});
-    await updateDoc(doc(db,'users',fromUid),{householdId: hRef.id});
-    await updateDoc(doc(db,'invites',inviteId),{status:'accepted'});
+    await updateDoc(doc(db,'users',currentUser.uid),{householdId:hId});
+    await updateDoc(doc(db,'users',partnerId),{householdId:hId});
 
-    userProfile.householdId = hRef.id;
-    await loadPartner();
+    householdId=hId;
+    userProfile.householdId=hId;
+    partnerProfile=pData;
+    partnerProfile.uid=partnerId;
+
     showScreen('app');
     initApp();
-    showToast('Connected! Welcome to your shared scorecard 🎉');
-  } catch(e){ showToast('Error: '+e.message); }
+    showToast('🎉 Connected with '+pData.name+'!');
+  }catch(e){showErr(errEl,'Error: '+e.message);}
 };
 
-window.declineInvite = async (inviteId) => {
-  await updateDoc(doc(db,'invites',inviteId),{status:'declined'});
-  showToast('Invite declined');
-  loadPendingInvites();
-};
-
-window.skipInvite = () => { showScreen('app'); initApp(); };
+window.skipInvite=()=>{showScreen('app');initApp();};
 
 async function loadPartner(){
-  if(!householdId) return;
-  const hSnap = await getDoc(doc(db,'households',householdId));
-  if(!hSnap.exists()) return;
-  const members = hSnap.data().members;
-  const partnerId = members.find(m=>m!==currentUser.uid);
-  if(!partnerId) return;
-  const pSnap = await getDoc(doc(db,'users',partnerId));
-  if(pSnap.exists()) partnerProfile = pSnap.data();
+  if(!householdId)return;
+  const hSnap=await getDoc(doc(db,'households',householdId));
+  if(!hSnap.exists())return;
+  const members=hSnap.data().members;
+  const partnerId=members.find(m=>m!==currentUser.uid);
+  if(!partnerId)return;
+  const pSnap=await getDoc(doc(db,'users',partnerId));
+  if(pSnap.exists()){partnerProfile={...pSnap.data(),uid:partnerId};}
 }
 
 // ============ APP INIT ============
 function initApp(){
   updateNameDisplays();
   renderDay(currentDate);
-  checkPendingInvites();
 }
 
 function updateNameDisplays(){
-  const myName = userProfile?.name || 'You';
-  const pName  = partnerProfile?.name || 'Partner';
-  document.getElementById('your-name-display').textContent = myName;
-  document.getElementById('partner-name-display').textContent = pName;
-  document.getElementById('col-you').textContent = myName;
-  document.getElementById('col-partner').textContent = pName;
-  document.getElementById('bd-you-hdr').textContent = myName;
-  document.getElementById('bd-partner-hdr').textContent = pName;
-  document.getElementById('spend-your-name').textContent = myName;
-  document.getElementById('spend-partner-name').textContent = pName;
-  document.getElementById('top-bar-name').textContent = partnerProfile ? `${myName} & ${pName}` : myName;
-  if(partnerProfile) document.getElementById('live-indicator').classList.remove('hidden');
-  // Profile page
-  document.getElementById('prof-name').textContent = myName;
-  document.getElementById('prof-email').textContent = userProfile?.email||'—';
-  document.getElementById('prof-partner').textContent = pName!=='Partner'?pName:'Not connected';
-  document.getElementById('prof-household').textContent = householdId||'Solo';
-  document.getElementById('partner-display').textContent = pName!=='Partner'?pName:'Not connected yet';
+  const myN=userProfile?.name||'You';
+  const ptN=partnerProfile?.name||'Partner';
+  document.getElementById('your-name-d').textContent=myN;
+  document.getElementById('partner-name-d').textContent=ptN;
+  document.getElementById('col-you').textContent=myN;
+  document.getElementById('col-partner').textContent=ptN;
+  document.getElementById('bd-you-h').textContent=myN;
+  document.getElementById('bd-partner-h').textContent=ptN;
+  document.getElementById('spend-your-name').textContent=myN;
+  document.getElementById('spend-partner-name').textContent=ptN;
+  document.getElementById('top-bar-name').textContent=partnerProfile?`${myN} & ${ptN}`:myN;
+  if(partnerProfile)document.getElementById('live-indicator').classList.remove('hidden');
+  document.getElementById('prof-name').textContent=myN;
+  document.getElementById('prof-email').textContent=userProfile?.email||'—';
+  document.getElementById('prof-partner').textContent=ptN!=='Partner'?ptN:'Not connected';
+  showMyCode();
 }
 
-async function checkPendingInvites(){
-  await loadPendingInvites();
-}
-
-// ============ DATE ============
-function dateKey(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-
-function getDinnerInfo(d){
-  const day=d.getDay();
-  if(day===0) return {note:'Sunday — Dining Out 🍽️'};
-  if([1,2,3].includes(day)) return {note:'Mon–Wed cook rotation'};
-  return {note:'Thu–Sat cook rotation'};
-}
-
-// ============ FIRESTORE DAY ============
-function myDayPath(d){ return `households/${householdId}/days/${dateKey(d)}_${currentUser.uid}`; }
-function partnerDayPath(d){
-  const pid = partnerProfile?.uid;
-  if(!pid) return null;
-  return `households/${householdId}/days/${dateKey(d)}_${pid}`;
+// ============ RENDER DAY ============
+async function renderDay(d){
+  document.getElementById('date-main').textContent=d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+  document.getElementById('date-sub').textContent=d.toLocaleDateString('en-IN',{weekday:'long'});
+  document.getElementById('dinner-sub').textContent=getDinnerInfo(d).note;
+  currentDayData=await loadOrInitMyDay(d);
+  partnerDayData=initEmptyDay();
+  ACTS.forEach(a=>{
+    buildToggle(`tg-you-${a.key}`,a.key,true,currentDayData[a.key]);
+    buildToggle(`tg-partner-${a.key}`,a.key,false,partnerDayData[a.key]);
+  });
+  document.getElementById('spend-you-input').value=currentDayData.spending||'';
+  document.getElementById('spend-partner-amount').textContent='₹0';
+  subscribeToDay(d);
+  updateScoreDisplay();
 }
 
 async function loadOrInitMyDay(d){
-  if(!householdId){
-    // Solo mode: use localStorage
-    const saved = localStorage.getItem('gpsc_solo_'+dateKey(d));
-    return saved ? JSON.parse(saved) : initEmptyDay();
-  }
-  const snap = await getDoc(doc(db, myDayPath(d)));
-  if(snap.exists()) return snap.data();
-  return initEmptyDay();
-}
-
-function initEmptyDay(){
-  const s={};
-  ACTS.forEach(a=>{ s[a.key]=null; });
-  s.spending=0;
-  return s;
+  if(!householdId){const s=localStorage.getItem('gpsc_solo_'+dateKey(d));return s?JSON.parse(s):initEmptyDay();}
+  const snap=await getDoc(doc(db,myDayPath(d)));
+  return snap.exists()?snap.data():initEmptyDay();
 }
 
 function subscribeToDay(d){
-  if(dayUnsubscribe) dayUnsubscribe();
-  if(!householdId||!partnerProfile) return;
-
-  const pPath = partnerDayPath(d);
-  if(!pPath) return;
-
-  dayUnsubscribe = onSnapshot(doc(db, pPath), (snap)=>{
-    partnerDayData = snap.exists() ? snap.data() : initEmptyDay();
+  if(dayUnsub)dayUnsub();
+  if(!householdId||!partnerProfile)return;
+  const pp=partnerDayPath(d);if(!pp)return;
+  dayUnsub=onSnapshot(doc(db,pp),(snap)=>{
+    partnerDayData=snap.exists()?snap.data():initEmptyDay();
     updatePartnerUI();
   });
 }
 
 function updatePartnerUI(){
-  if(!partnerDayData) return;
-  // Update partner toggles (read-only visual)
+  if(!partnerDayData)return;
   ACTS.forEach(a=>{
-    const val = partnerDayData[a.key];
-    const container = document.getElementById(`tg-partner-${a.key}`);
-    if(!container) return;
-    container.querySelectorAll('.tb').forEach(b=>{
-      b.classList.remove('active');
-      if(b.dataset.val===val) b.classList.add('active');
-    });
+    const val=partnerDayData[a.key];
+    const c=document.getElementById(`tg-partner-${a.key}`);if(!c)return;
+    c.querySelectorAll('.tb').forEach(b=>{b.classList.remove('active');if(b.dataset.val===val)b.classList.add('active');});
   });
-  // Update partner spending
-  const pSpend = partnerDayData.spending||0;
-  document.getElementById('spend-partner-amount').textContent = '₹'+pSpend.toLocaleString('en-IN');
+  document.getElementById('spend-partner-amount').textContent='₹'+(partnerDayData.spending||0).toLocaleString('en-IN');
   updateSpendingTotal();
   updateScoreDisplay();
 }
 
-// ============ RENDER DAY ============
-async function renderDay(d){
-  document.getElementById('date-main').textContent = d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-  document.getElementById('date-sub').textContent = d.toLocaleDateString('en-IN',{weekday:'long'});
-  document.getElementById('dinner-sub').textContent = getDinnerInfo(d).note;
+window.changeDay=(delta)=>{currentDate=new Date(currentDate.getTime()+delta*86400000);renderDay(currentDate);};
 
-  currentDayData = await loadOrInitMyDay(d);
-  partnerDayData = initEmptyDay();
-
-  // Build toggles
-  ACTS.forEach(a=>{
-    buildToggle(`tg-you-${a.key}`, a.key, true, currentDayData[a.key]);
-    buildToggle(`tg-partner-${a.key}`, a.key, false, partnerDayData[a.key]);
-  });
-
-  // Spending
-  document.getElementById('spend-you-input').value = currentDayData.spending||'';
-  document.getElementById('spend-partner-amount').textContent = '₹0';
-
-  subscribeToDay(d);
-  updateScoreDisplay();
-}
-
-window.changeDay = (delta)=>{ currentDate=new Date(currentDate.getTime()+delta*86400000); renderDay(currentDate); };
-
-// ============ TOGGLE BUILDER ============
-function buildToggle(containerId, actKey, isMe, initVal){
-  const c=document.getElementById(containerId); if(!c) return;
+// ============ TOGGLES ============
+function buildToggle(id,actKey,isMe,initVal){
+  const c=document.getElementById(id);if(!c)return;
   c.innerHTML='';
   const act=ACTS.find(a=>a.key===actKey);
   const opts=act.hasNA?['yes','no','na']:['yes','no'];
   opts.forEach(opt=>{
     const btn=document.createElement('button');
-    btn.className=`tb ${opt}`;
-    btn.dataset.val=opt;
+    btn.className=`tb ${opt}`;btn.dataset.val=opt;
     btn.textContent=opt==='yes'?'YES':opt==='no'?'NO':'N/A';
-    if(initVal===opt) btn.classList.add('active');
-    if(!isMe){ btn.disabled=true; btn.style.cursor='default'; }
+    if(initVal===opt)btn.classList.add('active');
+    if(!isMe){btn.disabled=true;btn.style.cursor='default';}
     btn.onclick=()=>{
-      if(!isMe) return;
+      if(!isMe)return;
       c.querySelectorAll('.tb').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       currentDayData[actKey]=opt;
@@ -993,118 +854,83 @@ function buildToggle(containerId, actKey, isMe, initVal){
 // ============ SCORING ============
 function calcScore(data){
   let pts=0,possible=0;
-  if(!data) return {pts:0,possible:0};
-  ACTS.forEach(a=>{
-    const v=data[a.key];
-    if(v==='na') return;
-    possible+=10;
-    if(v==='yes') pts+=10;
-  });
-  return {pts,possible};
+  if(!data)return{pts:0,possible:0};
+  ACTS.forEach(a=>{const v=data[a.key];if(v==='na')return;possible+=10;if(v==='yes')pts+=10;});
+  return{pts,possible};
 }
-
 function calcCatScore(data,cat){
   let pts=0,possible=0;
-  if(!data) return {pts:0,possible:0};
-  ACTS.filter(a=>a.cat===cat).forEach(a=>{
-    const v=data[a.key];
-    if(v==='na') return;
-    possible+=10;
-    if(v==='yes') pts+=10;
-  });
-  return {pts,possible};
+  if(!data)return{pts:0,possible:0};
+  ACTS.filter(a=>a.cat===cat).forEach(a=>{const v=data[a.key];if(v==='na')return;possible+=10;if(v==='yes')pts+=10;});
+  return{pts,possible};
 }
-
 function getTag(pct){
-  if(pct===100) return {text:'🏆 PERFECT',cls:'tag-perfect'};
-  if(pct>=80)   return {text:'⚡ GREAT',cls:'tag-great'};
-  if(pct>=60)   return {text:'✨ GOOD',cls:'tag-good'};
-  return {text:'💪 KEEP GOING',cls:'tag-keep'};
+  if(pct===100)return{text:'🏆 PERFECT',cls:'tag-perfect'};
+  if(pct>=80)return{text:'⚡ GREAT',cls:'tag-great'};
+  if(pct>=60)return{text:'✨ GOOD',cls:'tag-good'};
+  return{text:'💪 KEEP GOING',cls:'tag-keep'};
 }
 
 async function calcStreak(isMe){
-  let streak=0, d=new Date(currentDate);
+  let streak=0,d=new Date(currentDate);
   for(let i=0;i<60;i++){
     let data;
     if(householdId){
-      const uid = isMe?currentUser.uid:partnerProfile?.uid;
-      if(!uid) break;
-      const snap = await getDoc(doc(db,`households/${householdId}/days/${dateKey(d)}_${uid}`));
-      data = snap.exists()?snap.data():null;
-    } else {
-      const saved=localStorage.getItem('gpsc_solo_'+dateKey(d));
-      data=saved?JSON.parse(saved):null;
-    }
-    if(!data) break;
-    const s=calcScore(data);
-    if(s.possible>0&&s.pts/s.possible>=0.8) streak++;
-    else break;
+      const uid=isMe?currentUser.uid:partnerProfile?.uid;
+      if(!uid)break;
+      const snap=await getDoc(doc(db,`households/${householdId}/days/${dateKey(d)}_${uid}`));
+      data=snap.exists()?snap.data():null;
+    }else{const s=localStorage.getItem('gpsc_solo_'+dateKey(d));data=s?JSON.parse(s):null;}
+    if(!data)break;
+    const sc=calcScore(data);
+    if(sc.possible>0&&sc.pts/sc.possible>=0.8)streak++;else break;
     d=new Date(d.getTime()-86400000);
   }
   return streak;
 }
 
 function updateScoreDisplay(){
-  const my = calcScore(currentDayData);
-  const pt = calcScore(partnerDayData);
-  const myPct = my.possible>0?Math.round(my.pts/my.possible*100):0;
-  const ptPct = pt.possible>0?Math.round(pt.pts/pt.possible*100):0;
-
+  const my=calcScore(currentDayData),pt=calcScore(partnerDayData);
+  const myPct=my.possible>0?Math.round(my.pts/my.possible*100):0;
+  const ptPct=pt.possible>0?Math.round(pt.pts/pt.possible*100):0;
   document.getElementById('pts-you').textContent=my.pts;
   document.getElementById('pts-partner').textContent=pt.pts;
   document.getElementById('of-you').textContent=`of ${my.possible} pts`;
   document.getElementById('of-partner').textContent=`of ${pt.possible} pts`;
   document.getElementById('pct-you').textContent=`${myPct}%`;
   document.getElementById('pct-partner').textContent=`${ptPct}%`;
-
   const ty=getTag(myPct),tp=getTag(ptPct);
-  const tagY=document.getElementById('tag-you'); tagY.textContent=ty.text; tagY.className=`s-tag ${ty.cls}`;
-  const tagP=document.getElementById('tag-partner'); tagP.textContent=tp.text; tagP.className=`s-tag ${tp.cls}`;
-
+  const tagY=document.getElementById('tag-you');tagY.textContent=ty.text;tagY.className=`s-tag ${ty.cls}`;
+  const tagP=document.getElementById('tag-partner');tagP.textContent=tp.text;tagP.className=`s-tag ${tp.cls}`;
   document.getElementById('score-you').classList.toggle('winner',my.pts>pt.pts&&my.pts>0);
   document.getElementById('score-partner').classList.toggle('winner',pt.pts>my.pts&&pt.pts>0);
 
-  // Cat bars
   let catHTML='';
   Object.keys(CATS).forEach(cat=>{
-    const cy=calcCatScore(currentDayData,cat), cp=calcCatScore(partnerDayData,cat);
+    const cy=calcCatScore(currentDayData,cat),cp=calcCatScore(partnerDayData,cat);
     const yP=cy.possible>0?Math.round(cy.pts/cy.possible*100):0;
     const pP=cp.possible>0?Math.round(cp.pts/cp.possible*100):0;
-    catHTML+=`<div class="cat-card">
-      <div class="cat-title">${CATS[cat].icon} ${CATS[cat].label}</div>
-      <div class="cat-row"><div class="cat-who you">Y</div><div class="cat-bar-wrap"><div class="cat-bar you" style="width:${yP}%"></div></div><div class="cat-val">${cy.pts}/${cy.possible}</div></div>
-      <div class="cat-row"><div class="cat-who partner">P</div><div class="cat-bar-wrap"><div class="cat-bar partner" style="width:${pP}%"></div></div><div class="cat-val">${cp.pts}/${cp.possible}</div></div>
-    </div>`;
+    catHTML+=`<div class="cat-card"><div class="cat-title">${CATS[cat].icon} ${CATS[cat].label}</div><div class="cat-row"><div class="cat-who you">Y</div><div class="cat-bw"><div class="cat-bf you" style="width:${yP}%"></div></div><div class="cat-val">${cy.pts}/${cy.possible}</div></div><div class="cat-row"><div class="cat-who partner">P</div><div class="cat-bw"><div class="cat-bf partner" style="width:${pP}%"></div></div><div class="cat-val">${cp.pts}/${cp.possible}</div></div></div>`;
   });
   document.getElementById('cat-scores-area').innerHTML=catHTML;
 
-  // Missed
   const missed=[];
-  ACTS.forEach(a=>{
-    if(currentDayData[a.key]==='no') missed.push({who:'you',label:a.label});
-    if(partnerDayData[a.key]==='no') missed.push({who:'partner',label:a.label});
-  });
+  ACTS.forEach(a=>{if(currentDayData[a.key]==='no')missed.push({who:'you',label:a.label});if(partnerDayData[a.key]==='no')missed.push({who:'partner',label:a.label});});
   const mb=document.getElementById('missed-bar');
-  if(missed.length>0){
-    mb.style.display='block';
-    document.getElementById('missed-list').innerHTML=missed.map(m=>`<div class="missed-chip"><span class="who ${m.who}">${m.who==='you'?(userProfile?.name||'Y')[0]:(partnerProfile?.name||'P')[0]}</span> ${m.label}</div>`).join('');
-  } else { mb.style.display='none'; }
+  if(missed.length>0){mb.style.display='block';document.getElementById('missed-list').innerHTML=missed.map(m=>`<div class="missed-chip"><span class="who ${m.who}">${m.who==='you'?(userProfile?.name||'Y')[0]:(partnerProfile?.name||'P')[0]}</span> ${m.label}</div>`).join('');}
+  else{mb.style.display='none';}
 
-  // Section pts
   Object.keys(CATS).forEach(cat=>{
-    const cy=calcCatScore(currentDayData,cat), cp=calcCatScore(partnerDayData,cat);
+    const cy=calcCatScore(currentDayData,cat),cp=calcCatScore(partnerDayData,cat);
     const el=document.getElementById(`sec-pts-${cat}`);
-    if(el) el.textContent=`${(userProfile?.name||'Y').split(' ')[0]}: ${cy.pts} · ${(partnerProfile?.name||'P').split(' ')[0]}: ${cp.pts}`;
+    if(el)el.textContent=`${(userProfile?.name||'Y').split(' ')[0]}: ${cy.pts} · ${(partnerProfile?.name||'P').split(' ')[0]}: ${cp.pts}`;
   });
 
-  if(breakdownOpen) renderBreakdown();
-
-  // Async streaks
-  calcStreak(true).then(s=>{ document.getElementById('streak-you').textContent=s>1?`🔥 ${s}-day streak`:''; });
-  calcStreak(false).then(s=>{ document.getElementById('streak-partner').textContent=s>1?`🔥 ${s}-day streak`:''; });
+  if(breakdownOpen)renderBreakdown();
+  calcStreak(true).then(s=>{document.getElementById('streak-you').textContent=s>1?`🔥 ${s}-day streak`:'';});
+  calcStreak(false).then(s=>{document.getElementById('streak-partner').textContent=s>1?`🔥 ${s}-day streak`:'';});
 }
 
-// ============ BREAKDOWN ============
 function renderBreakdown(){
   let html='',lc='';
   ACTS.forEach(a=>{
@@ -1113,91 +939,58 @@ function renderBreakdown(){
     const pv=partnerDayData?partnerDayData[a.key]:null;
     html+=`<div class="bd-row"><div class="bd-act">${a.label}</div><div class="bd-cell">${dot(yv)}</div><div class="bd-cell">${dot(pv)}</div></div>`;
   });
-  document.getElementById('breakdown-rows').innerHTML=html;
+  document.getElementById('bd-rows').innerHTML=html;
 }
-function dot(v){
-  if(v==='yes') return '<div class="bd-dot yes">✓</div>';
-  if(v==='no')  return '<div class="bd-dot no">✗</div>';
-  if(v==='na')  return '<div class="bd-dot na">N/A</div>';
-  return '<div class="bd-dot empty">—</div>';
-}
+function dot(v){if(v==='yes')return'<div class="bd-dot yes">✓</div>';if(v==='no')return'<div class="bd-dot no">✗</div>';if(v==='na')return'<div class="bd-dot na">N/A</div>';return'<div class="bd-dot empty">—</div>';}
 window.toggleBreakdown=()=>{
   breakdownOpen=!breakdownOpen;
-  document.getElementById('breakdown-panel').classList.toggle('hidden',!breakdownOpen);
+  document.getElementById('bd-panel').classList.toggle('hidden',!breakdownOpen);
   document.getElementById('bd-toggle').innerHTML=(breakdownOpen?'▲':'▼')+' ACTIVITY BREAKDOWN';
-  if(breakdownOpen) renderBreakdown();
+  if(breakdownOpen)renderBreakdown();
 };
 
 // ============ SPENDING ============
 window.updateSpending=()=>{
   clearTimeout(spendDebounce);
-  spendDebounce=setTimeout(()=>{
-    const val=parseFloat(document.getElementById('spend-you-input').value)||0;
-    currentDayData.spending=val;
-    updateSpendingTotal();
-  },300);
+  spendDebounce=setTimeout(()=>{const val=parseFloat(document.getElementById('spend-you-input').value)||0;currentDayData.spending=val;updateSpendingTotal();},300);
 };
-
 function updateSpendingTotal(){
-  const mySpend=currentDayData?.spending||0;
-  const ptSpend=partnerDayData?.spending||0;
-  const total=mySpend+ptSpend;
-  document.getElementById('spending-total').textContent='₹'+total.toLocaleString('en-IN')+' combined';
+  const myS=currentDayData?.spending||0,ptS=partnerDayData?.spending||0;
+  document.getElementById('spending-total').textContent='₹'+(myS+ptS).toLocaleString('en-IN')+' combined';
 }
 
 // ============ SAVE ============
 window.saveDay=async()=>{
-  if(!currentDayData) return;
-  try {
+  if(!currentDayData)return;
+  try{
     if(householdId){
-      await setDoc(doc(db,myDayPath(currentDate)),{
-        ...currentDayData,
-        uid: currentUser.uid,
-        name: userProfile?.name,
-        date: dateKey(currentDate),
-        updatedAt: serverTimestamp()
-      });
-    } else {
-      localStorage.setItem('gpsc_solo_'+dateKey(currentDate), JSON.stringify(currentDayData));
-    }
+      await setDoc(doc(db,myDayPath(currentDate)),{...currentDayData,uid:currentUser.uid,name:userProfile?.name,date:dateKey(currentDate),updatedAt:serverTimestamp()});
+    }else{localStorage.setItem('gpsc_solo_'+dateKey(currentDate),JSON.stringify(currentDayData));}
     showToast('✅ Saved & Synced!');
-  } catch(e){ showToast('Error saving: '+e.message); }
+  }catch(e){showToast('Error: '+e.message);}
 };
 
 // ============ PERIOD VIEWS ============
-async function loadDayData(d, uid){
-  if(householdId){
-    const snap=await getDoc(doc(db,`households/${householdId}/days/${dateKey(d)}_${uid}`));
-    return snap.exists()?snap.data():null;
-  } else {
-    const saved=localStorage.getItem('gpsc_solo_'+dateKey(d));
-    return saved?JSON.parse(saved):null;
-  }
+async function loadDayData(d,uid){
+  if(householdId){const snap=await getDoc(doc(db,`households/${householdId}/days/${dateKey(d)}_${uid}`));return snap.exists()?snap.data():null;}
+  const s=localStorage.getItem('gpsc_solo_'+dateKey(d));return s?JSON.parse(s):null;
 }
 
 async function aggregateDates(dates){
-  const myUid=currentUser.uid;
-  const ptUid=partnerProfile?.uid;
-
+  const myUid=currentUser.uid,ptUid=partnerProfile?.uid;
   let yTotal=0,pTotal=0,yWins=0,pWins=0,yH2H=0,pH2H=0;
   let bestY=null,worstY=null,bestP=null,worstP=null;
   const yAC={},pAC={},yAP={},pAP={};
   ACTS.forEach(a=>{yAC[a.key]=0;pAC[a.key]=0;yAP[a.key]=0;pAP[a.key]=0;});
-  const catY={morning:0,home:0,dinner:0,night:0},catP={...catY};
-  const catYP={...catY},catPP={...catY};
-  let daysLogged=0;
-  const rows=[];
-  let spendY=0,spendP=0;
-  const spendRows=[];
-
+  const catY={morning:0,home:0,dinner:0,night:0},catP={...catY},catYP={...catY},catPP={...catY};
+  let daysLogged=0;const rows=[];let spendY=0,spendP=0,spendRows=[];
   for(const d of dates){
     const yd=await loadDayData(d,myUid);
     const pd=ptUid?await loadDayData(d,ptUid):null;
     if(!yd&&!pd){rows.push({d,yPts:0,pPts:0,yPct:0,pPct:0,yWin:false,pWin:false,logged:false});continue;}
     daysLogged++;
     const ys=calcScore(yd||{}),ps=calcScore(pd||{});
-    const yPct=ys.possible>0?ys.pts/ys.possible*100:0;
-    const pPct=ps.possible>0?ps.pts/ps.possible*100:0;
+    const yPct=ys.possible>0?ys.pts/ys.possible*100:0,pPct=ps.possible>0?ps.pts/ps.possible*100:0;
     yTotal+=ys.pts;pTotal+=ps.pts;
     const yW=yPct>=80,pW=pPct>=80;
     if(yW)yWins++;if(pW)pWins++;
@@ -1212,27 +1005,19 @@ async function aggregateDates(dates){
     });
     Object.keys(catY).forEach(cat=>{
       const cy=calcCatScore(yd||{},cat),cp=calcCatScore(pd||{},cat);
-      catY[cat]+=cy.pts;catYP[cat]+=cy.possible;
-      catP[cat]+=cp.pts;catPP[cat]+=cp.possible;
+      catY[cat]+=cy.pts;catYP[cat]+=cy.possible;catP[cat]+=cp.pts;catPP[cat]+=cp.possible;
     });
-    const ySp=(yd?.spending||0),pSp=(pd?.spending||0);
+    const ySp=yd?.spending||0,pSp=pd?.spending||0;
     spendY+=ySp;spendP+=pSp;
     spendRows.push({d,ySp,pSp,total:ySp+pSp});
     rows.push({d,yPts:ys.pts,pPts:ps.pts,yPct:Math.round(yPct),pPct:Math.round(pPct),yWin:yW,pWin:pW,logged:true});
   }
-  return {yTotal,pTotal,yWins,pWins,yH2H,pH2H,bestY,worstY,bestP,worstP,yAC,pAC,yAP,pAP,catY,catP,catYP,catPP,daysLogged,rows,spendY,spendP,spendRows};
+  return{yTotal,pTotal,yWins,pWins,yH2H,pH2H,bestY,worstY,bestP,worstP,yAC,pAC,yAP,pAP,catY,catP,catYP,catPP,daysLogged,rows,spendY,spendP,spendRows};
 }
 
 async function calcPeriodStreak(dates,isMe){
-  let max=0,cur=0;
-  const uid=isMe?currentUser.uid:partnerProfile?.uid;
-  if(!uid) return 0;
-  for(const d of dates){
-    const data=await loadDayData(d,uid);
-    if(!data){cur=0;continue;}
-    const s=calcScore(data);
-    if(s.possible>0&&s.pts/s.possible>=0.8){cur++;max=Math.max(max,cur);}else{cur=0;}
-  }
+  let max=0,cur=0;const uid=isMe?currentUser.uid:partnerProfile?.uid;if(!uid)return 0;
+  for(const d of dates){const data=await loadDayData(d,uid);if(!data){cur=0;continue;}const s=calcScore(data);if(s.possible>0&&s.pts/s.possible>=0.8){cur++;max=Math.max(max,cur);}else{cur=0;}}
   return max;
 }
 
@@ -1242,34 +1027,23 @@ async function renderPeriod(dates,containerId){
   const maxPts=R.daysLogged*140;
   const yPct=maxPts>0?Math.round(R.yTotal/maxPts*100):0;
   const pPct=maxPts>0?Math.round(R.pTotal/maxPts*100):0;
-  const yStr=await calcPeriodStreak(dates,true);
-  const pStr=await calcPeriodStreak(dates,false);
-  const myN=(userProfile?.name||'You').split(' ')[0];
-  const ptN=(partnerProfile?.name||'Partner').split(' ')[0];
-
-  const ranked=[
-    {name:myN,cls:'you',total:R.yTotal,pct:yPct,h2h:R.yH2H,wins:R.yWins,streak:yStr},
-    {name:ptN,cls:'partner',total:R.pTotal,pct:pPct,h2h:R.pH2H,wins:R.pWins,streak:pStr}
-  ].sort((a,b)=>b.total-a.total);
-
+  const yStr=await calcPeriodStreak(dates,true),pStr=await calcPeriodStreak(dates,false);
+  const myN=(userProfile?.name||'You').split(' ')[0],ptN=(partnerProfile?.name||'Partner').split(' ')[0];
+  const ranked=[{name:myN,cls:'you',total:R.yTotal,pct:yPct,h2h:R.yH2H,wins:R.yWins,streak:yStr},{name:ptN,cls:'partner',total:R.pTotal,pct:pPct,h2h:R.pH2H,wins:R.pWins,streak:pStr}].sort((a,b)=>b.total-a.total);
   const fd=d=>d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
 
   let html=`
   <div class="wins-banner">
-    <div class="win-card you"><div class="win-num">${R.yH2H}</div><div class="win-label">${myN}</div><div class="win-sub">H2H Wins</div></div>
-    <div class="tie-badge">⚔️<br><span style="font-size:8px;letter-spacing:2px;color:var(--muted)">VS</span></div>
-    <div class="win-card partner"><div class="win-num">${R.pH2H}</div><div class="win-label">${ptN}</div><div class="win-sub">H2H Wins</div></div>
+    <div class="win-card you"><div class="win-num">${R.yH2H}</div><div class="win-lbl">${myN}</div><div class="win-sub">H2H Wins</div></div>
+    <div class="tie-badge">⚔️<br><span style="font-size:8px;color:var(--muted)">VS</span></div>
+    <div class="win-card partner"><div class="win-num">${R.pH2H}</div><div class="win-lbl">${ptN}</div><div class="win-sub">H2H Wins</div></div>
   </div>
-  <div style="text-align:center;margin:0 16px 12px;font-size:11px;color:var(--muted)">${R.daysLogged} of ${dates.length} days logged</div>
-  <div class="leaderboard">
-    <div class="lb-hdr"><span>🏆</span><span class="title">Leaderboard</span></div>
-    <div class="lb-row hr"><div></div><div>Name</div><div>Score</div><div>%</div><div>H2H</div><div>80%+</div><div>Streak</div></div>`;
-  ranked.forEach((r,i)=>{
-    html+=`<div class="lb-row"><div class="lb-rank">${i===0?'🥇':'🥈'}</div><div class="lb-name ${r.cls}">${r.name}</div><div class="lb-stat hi">${r.total}</div><div class="lb-stat">${r.pct}%</div><div class="lb-stat wc">${r.h2h}</div><div class="lb-stat">${r.wins}</div><div class="lb-stat st">${r.streak>0?`🔥${r.streak}d`:'—'}</div></div>`;
-  });
+  <div style="text-align:center;margin:0 14px 10px;font-size:11px;color:var(--muted)">${R.daysLogged} of ${dates.length} days logged</div>
+  <div class="lb"><div class="lb-hdr"><span>🏆</span><span class="t">Leaderboard</span></div>
+  <div class="lb-row hr"><div></div><div>Name</div><div>Score</div><div>%</div><div>H2H</div><div>80%+</div><div>Streak</div></div>`;
+  ranked.forEach((r,i)=>{html+=`<div class="lb-row"><div class="lb-rank">${i===0?'🥇':'🥈'}</div><div class="lb-name ${r.cls}">${r.name}</div><div class="lb-s hi">${r.total}</div><div class="lb-s">${r.pct}%</div><div class="lb-s wc">${r.h2h}</div><div class="lb-s">${r.wins}</div><div class="lb-s st">${r.streak>0?`🔥${r.streak}d`:'—'}</div></div>`;});
   html+=`</div>`;
 
-  // Best/Worst
   html+=`<div class="bw-grid">`;
   [{title:`🌟 Best — ${myN}`,day:R.bestY,yp:R.bestY?.pts,pp:R.bestY?.pPts},
    {title:`📉 Worst — ${myN}`,day:R.worstY,yp:R.worstY?.pts,pp:R.worstY?.pPts},
@@ -1283,8 +1057,7 @@ async function renderPeriod(dates,containerId){
   });
   html+=`</div>`;
 
-  // Category breakdown
-  html+=`<div class="cat-breakdown"><div class="cat-bd-hdr">📊 Category Breakdown</div>`;
+  html+=`<div class="cat-bd"><div class="cat-bd-hdr">📊 Category Breakdown</div>`;
   Object.keys(CATS).forEach(cat=>{
     const yP=R.catYP[cat]>0?Math.round(R.catY[cat]/R.catYP[cat]*100):0;
     const pP=R.catPP[cat]>0?Math.round(R.catP[cat]/R.catPP[cat]*100):0;
@@ -1292,39 +1065,28 @@ async function renderPeriod(dates,containerId){
   });
   html+=`</div>`;
 
-  // Activity table
   html+=`<div class="act-table"><div class="ath"><span>Activity</span><span class="you">${myN}</span><span class="partner">${ptN}</span></div>`;
   let lc='';
   ACTS.forEach(a=>{
     if(a.cat!==lc){lc=a.cat;html+=`<div class="atr cat"><span>${CATS[a.cat].icon} ${CATS[a.cat].label}</span></div>`;}
     const yP=R.yAP[a.key]>0?Math.round(R.yAC[a.key]/R.yAP[a.key]*100):null;
     const pP=R.pAP[a.key]>0?Math.round(R.pAC[a.key]/R.pAP[a.key]*100):null;
-    html+=`<div class="atr"><div class="at-name">${a.label}</div><div class="at-cell">${yP!==null?`<div class="at-pct" style="color:var(--g-color)">${yP}%</div><div class="at-bar-wrap"><div class="at-bar you" style="width:${yP}%"></div></div>`:'<span style="color:var(--muted);font-size:9px">N/A</span>'}</div><div class="at-cell">${pP!==null?`<div class="at-pct" style="color:var(--p-color)">${pP}%</div><div class="at-bar-wrap"><div class="at-bar partner" style="width:${pP}%"></div></div>`:'<span style="color:var(--muted);font-size:9px">N/A</span>'}</div></div>`;
+    html+=`<div class="atr"><div class="at-name">${a.label}</div><div class="at-cell">${yP!==null?`<div class="at-pct" style="color:var(--g-color)">${yP}%</div><div class="at-bw"><div class="at-bf you" style="width:${yP}%"></div></div>`:'<span style="color:var(--muted);font-size:9px">N/A</span>'}</div><div class="at-cell">${pP!==null?`<div class="at-pct" style="color:var(--p-color)">${pP}%</div><div class="at-bw"><div class="at-bf partner" style="width:${pP}%"></div></div>`:'<span style="color:var(--muted);font-size:9px">N/A</span>'}</div></div>`;
   });
   html+=`</div>`;
 
-  // Spending summary
-  html+=`<div class="spend-summary"><div class="spend-sum-hdr">💰 Spending Summary</div>`;
+  html+=`<div class="spend-sum"><div class="spend-sum-hdr">💰 Spending Summary</div>`;
   html+=`<div class="spend-sum-row"><span class="spend-sum-date" style="font-weight:600">Total Period</span><div class="spend-sum-vals"><span class="spend-val you">${myN}: ₹${R.spendY.toLocaleString('en-IN')}</span><span class="spend-val partner">${ptN}: ₹${R.spendP.toLocaleString('en-IN')}</span><span class="spend-val total">Combined: ₹${(R.spendY+R.spendP).toLocaleString('en-IN')}</span></div></div>`;
-  R.spendRows.filter(r=>r.total>0).slice(-10).reverse().forEach(r=>{
-    html+=`<div class="spend-sum-row"><span class="spend-sum-date">${fd(r.d)}, ${DS[r.d.getDay()]}</span><div class="spend-sum-vals"><span class="spend-val you">₹${r.ySp.toLocaleString('en-IN')}</span><span class="spend-val partner">₹${r.pSp.toLocaleString('en-IN')}</span></div></div>`;
-  });
+  R.spendRows.filter(r=>r.total>0).slice(-10).reverse().forEach(r=>{html+=`<div class="spend-sum-row"><span class="spend-sum-date">${fd(r.d)}, ${DS[r.d.getDay()]}</span><div class="spend-sum-vals"><span class="spend-val you">₹${r.ySp.toLocaleString('en-IN')}</span><span class="spend-val partner">₹${r.pSp.toLocaleString('en-IN')}</span></div></div>`;});
   html+=`</div>`;
 
-  // Day grid
-  const cols=Math.min(dates.length,31);
-  const showDates=dates.slice(0,cols);
-  html+=`<div class="day-grid"><div class="dg-inner"><div class="dg-head" style="grid-template-columns:52px repeat(${cols},1fr)"><div>Person</div>`;
+  const cols=Math.min(dates.length,31);const showDates=dates.slice(0,cols);
+  html+=`<div class="day-grid"><div class="dg-inner"><div class="dg-head" style="grid-template-columns:50px repeat(${cols},1fr)"><div>Who</div>`;
   showDates.forEach(d=>{html+=`<div>${DS[d.getDay()]}<br>${d.getDate()}</div>`;});
   html+=`</div>`;
-  [{cls:'you',name:myN,getP:(r)=>({pts:r.yPts,pct:r.yPct,win:r.yWin})},
-   {cls:'partner',name:ptN,getP:(r)=>({pts:r.pPts,pct:r.pPct,win:r.pWin})}
-  ].forEach(({cls,name,getP})=>{
-    html+=`<div class="dg-row" style="grid-template-columns:52px repeat(${cols},1fr)"><div style="font-size:9px;font-weight:600;color:var(--${cls==='you'?'g':'p'}-color)">${name}</div>`;
-    R.rows.slice(0,cols).forEach(r=>{
-      const {pts,pct,win}=getP(r);
-      html+=`<div class="${win?'cell-win ':''} cell-${cls}">${r.logged?`${pts}<br><span style="font-size:8px;color:var(--muted)">${pct}%</span>`:'—'}</div>`;
-    });
+  [{cls:'you',name:myN,gP:(r)=>({pts:r.yPts,pct:r.yPct,win:r.yWin})},{cls:'partner',name:ptN,gP:(r)=>({pts:r.pPts,pct:r.pPct,win:r.pWin})}].forEach(({cls,name,gP})=>{
+    html+=`<div class="dg-row" style="grid-template-columns:50px repeat(${cols},1fr)"><div style="font-size:9px;font-weight:600;color:${cls==='you'?'var(--g-color)':'var(--p-color)'}">${name}</div>`;
+    R.rows.slice(0,cols).forEach(r=>{const{pts,pct,win}=gP(r);html+=`<div class="${win?'cell-win ':''} cell-${cls}">${r.logged?`${pts}<br><span style="font-size:8px;color:var(--muted)">${pct}%</span>`:'—'}</div>`;});
     html+=`</div>`;
   });
   html+=`</div></div></div>`;
@@ -1332,60 +1094,28 @@ async function renderPeriod(dates,containerId){
   document.getElementById(containerId).innerHTML=html;
 }
 
-// WEEK/MONTH
-function getWeekDates(off){
-  const now=new Date();now.setHours(0,0,0,0);
-  const mon=new Date(now.getTime()-now.getDay()*86400000+off*7*86400000);
-  return Array.from({length:7},(_,i)=>new Date(mon.getTime()+i*86400000));
-}
-async function renderWeekly(){
-  const dates=getWeekDates(weekOff);
-  const s=dates[0],e=dates[6];
-  document.getElementById('week-label').textContent=`${s.getDate()} ${MN[s.getMonth()].slice(0,3)} – ${e.getDate()} ${MN[e.getMonth()].slice(0,3)}`;
-  await renderPeriod(dates,'weekly-content');
-}
+function getWeekDates(off){const now=new Date();now.setHours(0,0,0,0);const mon=new Date(now.getTime()-now.getDay()*86400000+off*7*86400000);return Array.from({length:7},(_,i)=>new Date(mon.getTime()+i*86400000));}
+async function renderWeekly(){const dates=getWeekDates(weekOff);const s=dates[0],e=dates[6];document.getElementById('week-label').textContent=`${s.getDate()} ${MN[s.getMonth()].slice(0,3)} – ${e.getDate()} ${MN[e.getMonth()].slice(0,3)}`;await renderPeriod(dates,'weekly-content');}
 window.changeWeek=(d)=>{weekOff+=d;renderWeekly();};
 
-function getMonthDates(off){
-  const now=new Date(),m=now.getMonth()+off,y=now.getFullYear();
-  const last=new Date(y,m+1,0);
-  return{dates:Array.from({length:last.getDate()},(_,i)=>new Date(y,m,i+1)),month:new Date(y,m,1).getMonth(),year:y};
-}
-async function renderMonthly(){
-  const{dates,month,year}=getMonthDates(monthOff);
-  document.getElementById('month-label').textContent=`${MN[month]} ${year}`;
-  await renderPeriod(dates,'monthly-content');
-}
+function getMonthDates(off){const now=new Date(),m=now.getMonth()+off,y=now.getFullYear();const last=new Date(y,m+1,0);return{dates:Array.from({length:last.getDate()},(_,i)=>new Date(y,m,i+1)),month:new Date(y,m,1).getMonth(),year:y};}
+async function renderMonthly(){const{dates,month,year}=getMonthDates(monthOff);document.getElementById('month-label').textContent=`${MN[month]} ${year}`;await renderPeriod(dates,'monthly-content');}
 window.changeMonth=(d)=>{monthOff+=d;renderMonthly();};
 
-// ============ TABS & NAV ============
 window.showTab=(name)=>{
-  ['daily','weekly','monthly'].forEach((t,i)=>{
-    document.getElementById(`tab-${t}`).classList.toggle('hidden',t!==name);
-    document.querySelectorAll('.tab')[i].classList.toggle('active',t===name);
-  });
-  if(name==='weekly') renderWeekly();
-  if(name==='monthly') renderMonthly();
+  ['daily','weekly','monthly'].forEach((t,i)=>{document.getElementById(`tab-${t}`).classList.toggle('hidden',t!==name);document.querySelectorAll('.tab')[i].classList.toggle('active',t===name);});
+  if(name==='weekly')renderWeekly();if(name==='monthly')renderMonthly();
 };
-
-window.showBottomTab=(name)=>{
-  document.querySelectorAll('.bn-item').forEach((b,i)=>b.classList.toggle('active',i===(name==='scorecard'?0:1)));
-};
-
+window.showBottomTab=(i)=>{document.querySelectorAll('.bn-item').forEach((b,j)=>b.classList.toggle('active',j===i));};
 window.showScreen=(name)=>{
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(`screen-${name}`).classList.add('active');
-  if(name==='profile'){ updateNameDisplays(); loadPendingInvites(); }
-  if(name==='invite') loadPendingInvites();
+  if(name==='invite')showMyCode();
+  if(name==='profile')updateNameDisplays();
 };
+window.skipInvite=()=>{showScreen('app');initApp();};
 
-window.skipInvite=()=>{ showScreen('app'); initApp(); };
-
-// ============ TOAST ============
-window.showToast=(msg)=>{
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-};
+window.showToast=(msg)=>{const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);};
 </script>
 </body>
 </html>
