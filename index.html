@@ -487,10 +487,24 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
         <button class="a-tab" onclick="authTab('register')">Create Account</button>
       </div>
       <div id="auth-err" class="err-box"></div>
+      <div id="auth-ok" style="background:rgba(111,207,151,0.1);border:1px solid rgba(111,207,151,0.35);border-radius:8px;padding:11px 14px;font-size:12px;color:var(--green);margin-bottom:12px;display:none;line-height:1.5;"></div>
       <div id="f-login">
         <div class="fg"><label>Email</label><input type="email" id="e-email" placeholder="you@example.com" autocomplete="email"/></div>
         <div class="fg"><label>Password</label><input type="password" id="e-pass" placeholder="Your password" autocomplete="current-password"/></div>
         <button class="btn-gold" id="btn-login" onclick="doLogin()">Sign In →</button>
+        <div style="text-align:center;margin-top:14px;">
+          <button onclick="showForgot()" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px;">Forgot password?</button>
+        </div>
+      </div>
+
+      <!-- FORGOT PASSWORD PANEL -->
+      <div id="f-forgot" class="hidden">
+        <p style="font-size:12px;color:var(--muted);margin-bottom:14px;line-height:1.7;">Enter your registered email and we'll send you a password reset link.</p>
+        <div class="fg"><label>Email</label><input type="email" id="fp-email" placeholder="your@email.com" autocomplete="email"/></div>
+        <button class="btn-gold" id="btn-fp" onclick="doForgot()">Send Reset Link 📧</button>
+        <div style="text-align:center;margin-top:12px;">
+          <button onclick="hideForgot()" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline;text-underline-offset:3px;">← Back to Sign In</button>
+        </div>
       </div>
       <div id="f-register" class="hidden">
         <div class="fg"><label>Your Name</label><input type="text" id="r-name" placeholder="e.g. Girish or Priya"/></div>
@@ -798,11 +812,47 @@ function manualSave(){ setAS('saving'); doSave().then(function(){setAS('saved');
 // ========================================================
 // AUTH
 // ========================================================
+function showForgot(){
+  document.getElementById('f-login').classList.add('hidden');
+  document.getElementById('f-forgot').classList.remove('hidden');
+  document.getElementById('auth-err').style.display='none';
+  document.getElementById('auth-ok').style.display='none';
+  // pre-fill email if already typed
+  var email=document.getElementById('e-email').value.trim();
+  if(email) document.getElementById('fp-email').value=email;
+}
+function hideForgot(){
+  document.getElementById('f-forgot').classList.add('hidden');
+  document.getElementById('f-login').classList.remove('hidden');
+  document.getElementById('auth-err').style.display='none';
+  document.getElementById('auth-ok').style.display='none';
+}
+function doForgot(){
+  var email=document.getElementById('fp-email').value.trim();
+  var err=document.getElementById('auth-err');
+  var ok=document.getElementById('auth-ok');
+  err.style.display='none'; ok.style.display='none';
+  if(!email){errMsg('auth-err','Please enter your email.'); return;}
+  var btn=document.getElementById('btn-fp'); btn.disabled=true; btn.textContent='Sending...';
+  auth.sendPasswordResetEmail(email).then(function(){
+    btn.disabled=false; btn.textContent='Send Reset Link 📧';
+    ok.textContent='✅ Reset link sent to '+email+'. Check your inbox (and spam folder).';
+    ok.style.display='block';
+    document.getElementById('fp-email').value='';
+  }).catch(function(e){
+    btn.disabled=false; btn.textContent='Send Reset Link 📧';
+    var m=e.code==='auth/user-not-found'?'No account found with this email.':
+          e.code==='auth/invalid-email'?'Invalid email format.':e.message;
+    errMsg('auth-err',m);
+  });
+}
 function authTab(t){
   document.querySelectorAll('.a-tab').forEach(function(el,i){el.classList.toggle('on',i===(t==='login'?0:1));});
   document.getElementById('f-login').classList.toggle('hidden',t!=='login');
   document.getElementById('f-register').classList.toggle('hidden',t!=='register');
+  document.getElementById('f-forgot').classList.add('hidden');
   document.getElementById('auth-err').style.display='none';
+  document.getElementById('auth-ok').style.display='none';
 }
 function errMsg(id,msg){ var el=document.getElementById(id); el.textContent=msg; el.style.display='block'; }
 
